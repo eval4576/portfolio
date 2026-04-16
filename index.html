@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Senior Product Manager · Motionova Labs</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#04040a;--s1:#09090f;--s2:#0e0e18;--s3:#131320;--s4:#18182a;
+  --a:#7c5cfc;--a2:#a78bfa;--a3:#c4b5fd;--a4:#ede9fe;
+  --tx:#f0f0f8;--t2:#9090b8;--t3:#52526e;--t4:#2e2e48;
+  --bd:rgba(255,255,255,.06);--bd2:rgba(255,255,255,.11);--bd3:rgba(255,255,255,.18);
+  --green:#10b981;--gold:#f59e0b;--blue:#60a5fa;--red:#f87171;
+  --r:12px;--r2:18px;--r3:26px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--a);border-radius:2px}
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ── NAV ── */
+nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 2.5rem);max-width:960px}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:50px;padding:0 1.2rem;background:rgba(9,9,15,.8);backdrop-filter:blur(24px) saturate(1.8);border:1px solid var(--bd2);border-radius:999px;transition:all .3s}
+.nav-inner.scrolled{background:rgba(9,9,15,.95);border-color:var(--bd3)}
+.nav-logo{display:flex;align-items:center;gap:.6rem}
+.nav-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--a2));display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:#fff;flex-shrink:0}
+.nav-brand{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--a2)}
+.nav-links{display:flex;gap:1.6rem;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--t2)}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:var(--tx)}
+.nav-cta{background:var(--a);color:#fff;padding:.4rem 1.1rem;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:all .2s;border:1px solid transparent}
+.nav-cta:hover{background:var(--a2);transform:scale(1.04)}
+
+/* ── HERO ── */
+#hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:120px 6% 80px;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.o1{width:700px;height:700px;background:rgba(124,92,252,.14);top:-15%;right:-8%;animation:drift1 18s ease-in-out infinite}
+.o2{width:450px;height:450px;background:rgba(59,130,246,.09);bottom:-10%;left:-8%;animation:drift2 22s ease-in-out infinite}
+.o3{width:280px;height:280px;background:rgba(16,185,129,.07);top:45%;left:35%;animation:drift3 15s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,20px)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-25px)}}
+@keyframes drift3{0%,100%{transform:translate(0,0)}50%{transform:translate(-15px,15px)}}
+.hero-inner{position:relative;z-index:1;max-width:880px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.55rem;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:999px;padding:.38rem 1rem;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:1.8rem}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulseA 2.2s ease-in-out infinite}
+@keyframes pulseA{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+.hero-name{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t3);margin-bottom:.75rem}
+.hero-title{font-size:clamp(2.8rem,6.5vw,5.2rem);font-weight:900;line-height:1.02;letter-spacing:-.04em;margin-bottom:.5rem}
+.hero-title-static{color:var(--tx)}
+.hero-typewriter{display:block;background:linear-gradient(110deg,var(--a) 0%,var(--a2) 45%,var(--a3) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-height:1.1em}
+.cursor{display:inline-block;width:3px;height:.85em;background:var(--a2);margin-left:4px;animation:blink .85s step-end infinite;vertical-align:middle;border-radius:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-sub{font-size:1rem;color:var(--t2);max-width:520px;margin:1.2rem 0 2.4rem;line-height:1.8}
+.hero-ctas{display:flex;align-items:center;gap:1rem;margin-bottom:5rem;flex-wrap:wrap}
+.btn-p{display:inline-flex;align-items:center;gap:.5rem;background:var(--a);color:#fff;padding:.8rem 2rem;border-radius:999px;font-weight:700;font-size:.88rem;transition:all .25s;border:1px solid transparent}
+.btn-p:hover{background:var(--a2);transform:translateY(-2px);box-shadow:0 14px 40px rgba(124,92,252,.35)}
+.btn-s{display:inline-flex;align-items:center;gap:.5rem;color:var(--t2);padding:.8rem 1.8rem;border-radius:999px;font-weight:600;font-size:.88rem;border:1px solid var(--bd2);transition:all .25s}
+.btn-s:hover{color:var(--tx);border-color:var(--bd3)}
+.arr{transition:transform .2s}.btn-p:hover .arr,.btn-s:hover .arr{transform:translateX(3px)}
+
+/* METRIC COUNTERS */
+.hero-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.hm{background:rgba(9,9,15,.7);padding:1.4rem 1rem;text-align:center;backdrop-filter:blur(8px)}
+.hm-num{font-size:1.8rem;font-weight:900;letter-spacing:-.04em;background:linear-gradient(135deg,var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
+.hm-label{font-size:.65rem;color:var(--t3);margin-top:.35rem;letter-spacing:.07em;text-transform:uppercase;line-height:1.4}
+
+/* ── LOGOS ── */
+#logos{padding:26px 6%;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);background:var(--s1)}
+.logos-label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t3);text-align:center;margin-bottom:1.2rem}
+.logos-row{display:flex;gap:.85rem;align-items:center;justify-content:center;flex-wrap:wrap}
+.lp{background:rgba(255,255,255,.025);border:1px solid var(--bd);border-radius:8px;padding:.42rem 1rem;font-size:.7rem;font-weight:600;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;transition:all .25s}
+.lp:hover{color:var(--t2);border-color:var(--bd2);background:rgba(255,255,255,.04)}
+
+/* ── SHARED ── */
+.sec{padding:110px 6%}
+.sec-inner{max-width:1120px;margin:0 auto}
+.eyebrow{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--a);margin-bottom:.55rem}
+.sec-h{font-size:clamp(1.9rem,3.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.7rem;line-height:1.12}
+.rule{width:30px;height:1.5px;background:var(--a);border-radius:1px;margin-bottom:2.5rem}
+
+/* ── APEX FEATURE ── */
+#apex-feature{background:var(--s1);padding:110px 6%}
+.apex-shell{max-width:1120px;margin:0 auto;border:1px solid rgba(124,92,252,.25);border-radius:var(--r3);overflow:hidden;background:linear-gradient(135deg,rgba(124,92,252,.06) 0%,var(--s2) 60%)}
+.apex-top{padding:3rem 3.5rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;border-bottom:1px solid var(--bd)}
+.apex-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:999px;padding:.3rem .85rem;font-size:.67rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.1rem}
+.apex-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;letter-spacing:-.03em;margin-bottom:.5rem;line-height:1.1}
+.apex-title span{background:linear-gradient(110deg,var(--a),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.apex-sub{font-size:.88rem;color:var(--t2);line-height:1.75;max-width:520px}
+.apex-cta{display:inline-flex;align-items:center;gap:.5rem;background:var(--a);color:#fff;padding:.75rem 1.8rem;border-radius:999px;font-weight:700;font-size:.85rem;transition:all .25s;white-space:nowrap;margin-top:.5rem}
+.apex-cta:hover{background:var(--a2);transform:translateY(-2px);box-shadow:0 12px 35px rgba(124,92,252,.3)}
+.apex-pipeline{padding:2.5rem 3.5rem;display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--bd)}
+.ap-stage{background:var(--s2);padding:1.4rem 1rem;text-align:center;transition:background .2s}
+.ap-stage:hover{background:var(--s3)}
+.ap-ico{font-size:1.2rem;margin-bottom:.6rem}
+.ap-num{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:.2rem}
+.ap-name{font-size:.75rem;font-weight:700;color:var(--t2);line-height:1.3}
+.ap-stage:hover .ap-name{color:var(--tx)}
+.ap-principle{font-size:.65rem;color:var(--t3);margin-top:.3rem;line-height:1.4;font-style:italic}
+.apex-bottom{padding:1.5rem 3.5rem;border-top:1px solid var(--bd);display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.apex-stat{text-align:center}
+.apex-stat-num{font-size:1.3rem;font-weight:900;color:var(--a2);letter-spacing:-.02em}
+.apex-stat-label{font-size:.65rem;color:var(--t3);letter-spacing:.06em;text-transform:uppercase}
+.apex-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-left:auto}
+.atag{font-size:.67rem;background:rgba(124,92,252,.08);border:1px solid rgba(124,92,252,.18);color:var(--a2);padding:.2rem .6rem;border-radius:999px}
+
+/* ── PHILOSOPHY BENTO ── */
+#philosophy{background:var(--bg)}
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:auto;gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:var(--r3);overflow:hidden}
+.bc{background:var(--s2);padding:2rem;position:relative;overflow:hidden;transition:background .25s}
+.bc:hover{background:var(--s3)}
+.bc.span3{grid-column:span 3}.bc.span2{grid-column:span 2}.bc.stat{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.bc-num{font-size:2.8rem;font-weight:900;color:rgba(124,92,252,.12);line-height:1;margin-bottom:.4rem;letter-spacing:-.05em}
+.bc-h{font-size:.92rem;font-weight:700;margin-bottom:.45rem}
+.bc-p{font-size:.8rem;color:var(--t2);line-height:1.68}
+.bc-stat-n{font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--a),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:.2rem}
+.bc-stat-l{font-size:.65rem;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;line-height:1.4}
+.bc-glow{position:absolute;bottom:-40px;right:-40px;width:120px;height:120px;background:radial-gradient(circle,rgba(124,92,252,.12),transparent);border-radius:50%;pointer-events:none}
+
+/* ── CASE STUDY ── */
+#case-study{background:var(--s1)}
+.cs-shell{border:1px solid var(--bd2);border-radius:var(--r3);overflow:hidden}
+.cs-top{padding:2.5rem 3rem;background:linear-gradient(135deg,rgba(124,92,252,.07),rgba(9,9,15,1));border-bottom:1px solid var(--bd)}
+.cs-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:999px;padding:.28rem .82rem;font-size:.65rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.1rem}
+.cs-h{font-size:1.55rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.35rem}
+.cs-meta{font-size:.75rem;color:var(--t3);margin-bottom:.9rem}
+.cs-body{padding:2.5rem 3rem}
+.cs-arc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:2.2rem}
+.ca{background:var(--s2);padding:1.5rem}
+.ca-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--a);margin-bottom:.55rem;font-weight:700}
+.ca p{font-size:.8rem;color:var(--t2);line-height:1.68}
+.outcomes{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem}
+.oc{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r2);padding:1.3rem;text-align:center;transition:all .25s;position:relative;overflow:hidden}
+.oc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.02),transparent);pointer-events:none}
+.oc:hover{border-color:var(--bd2);transform:translateY(-3px)}
+.oc-num{font-size:1.55rem;font-weight:900;letter-spacing:-.03em;line-height:1}
+.oc-num.g{color:var(--green)}.oc-num.a{color:var(--a2)}.oc-num.go{color:var(--gold)}.oc-num.b{color:var(--blue)}
+.oc-label{font-size:.68rem;color:var(--t3);margin-top:.35rem;line-height:1.4}
+
+/* ── EXPERIENCE ── */
+#experience{background:var(--bg)}
+.tl{position:relative;padding-left:2.2rem}
+.tl::before{content:'';position:absolute;left:3px;top:10px;bottom:10px;width:1px;background:linear-gradient(to bottom,var(--a) 0%,rgba(124,92,252,.2) 70%,transparent 100%)}
+.tl-item{position:relative;margin-bottom:1.3rem}
+.tl-dot{position:absolute;left:-2.08rem;top:1.55rem;width:8px;height:8px;border-radius:50%;background:var(--a);border:2px solid var(--bg);box-shadow:0 0 10px rgba(124,92,252,.6)}
+.tl-item.featured .tl-dot{width:12px;height:12px;left:-2.18rem;top:1.45rem;box-shadow:0 0 16px rgba(124,92,252,.8)}
+
+/* FEATURED CARD */
+.tl-card{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r2);padding:1.7rem 2rem;transition:all .25s}
+.tl-card:hover{border-color:rgba(124,92,252,.25);background:var(--s3)}
+.tl-item.featured .tl-card{border-color:rgba(124,92,252,.22);background:linear-gradient(135deg,rgba(124,92,252,.05),var(--s2))}
+.featured-banner{display:inline-flex;align-items:center;gap:.4rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);border-radius:999px;padding:.22rem .7rem;font-size:.62rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.9rem}
+.tl-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.22rem}
+.tl-co{font-size:1rem;font-weight:800;letter-spacing:-.01em}
+.tl-pill{font-size:.65rem;color:var(--a2);background:rgba(124,92,252,.08);border:1px solid rgba(124,92,252,.18);padding:.2rem .65rem;border-radius:999px;white-space:nowrap}
+.tl-role{font-size:.78rem;color:var(--a2);margin-bottom:.15rem}
+.tl-loc{font-size:.72rem;color:var(--t3);margin-bottom:.85rem}
+.tl-desc{font-size:.82rem;color:var(--t2);margin-bottom:.9rem;line-height:1.68}
+.wins{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:.85rem}
+.win{display:inline-flex;align-items:center;gap:.32rem;background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:7px;padding:.28rem .7rem;font-size:.73rem;color:var(--t2)}
+.win-n{font-weight:800;color:var(--a2)}
+.tags{display:flex;flex-wrap:wrap;gap:.32rem}
+.tag{display:inline-block;font-size:.64rem;background:rgba(124,92,252,.07);color:var(--a2);padding:.16rem .52rem;border-radius:999px;border:1px solid rgba(124,92,252,.16)}
+
+/* ── AI TOOLKIT GRID ── */
+#toolkit{background:var(--s1)}
+.toolkit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.tk-card{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r2);padding:1.7rem;transition:all .28s;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.tk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--a),transparent);opacity:0;transition:.3s}
+.tk-card:hover{border-color:rgba(124,92,252,.3);transform:translateY(-4px);background:var(--s3)}
+.tk-card:hover::before{opacity:1}
+.tk-card.featured{border-color:rgba(124,92,252,.25);background:linear-gradient(135deg,rgba(124,92,252,.06),var(--s2))}
+.tk-card.featured::before{opacity:.5}
+.tk-ico{width:40px;height:40px;border-radius:11px;background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.2);display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:1.1rem}
+.tk-num{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:.2rem}
+.tk-title{font-size:.92rem;font-weight:700;margin-bottom:.45rem;letter-spacing:-.01em}
+.tk-desc{font-size:.79rem;color:var(--t2);line-height:1.65;flex:1}
+.tk-footer{display:flex;align-items:center;justify-content:space-between;margin-top:1.1rem;padding-top:.9rem;border-top:1px solid var(--bd)}
+.tk-status{font-size:.65rem;color:var(--green);font-weight:600;display:flex;align-items:center;gap:.35rem}
+.tk-status.soon{color:var(--t3)}
+.tk-link{font-size:.75rem;color:var(--a2);font-weight:600;display:inline-flex;align-items:center;gap:.3rem;transition:gap .2s}
+.tk-card:hover .tk-link{gap:.55rem}
+.tk-tags{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.65rem}
+.tk-tag{font-size:.62rem;background:rgba(124,92,252,.07);border:1px solid rgba(124,92,252,.15);color:var(--a2);padding:.15rem .5rem;border-radius:999px}
+
+/* ── SERVICES ── */
+#services{background:var(--bg)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:var(--r3);overflow:hidden}
+.svc{background:var(--s2);padding:2rem;transition:background .22s;position:relative;overflow:hidden}
+.svc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--a),transparent);opacity:0;transition:.3s}
+.svc:hover{background:var(--s3)}.svc:hover::after{opacity:1}
+.svc-ico{width:38px;height:38px;border-radius:10px;background:rgba(124,92,252,.09);border:1px solid rgba(124,92,252,.18);display:flex;align-items:center;justify-content:center;font-size:.88rem;margin-bottom:1.1rem}
+.svc h3{font-size:.88rem;font-weight:700;margin-bottom:.45rem}
+.svc p{font-size:.78rem;color:var(--t2);line-height:1.65}
+.svc-type{margin-top:.9rem;font-size:.63rem;color:var(--t3);letter-spacing:.09em;text-transform:uppercase}
+
+/* ── IMPACT STRIP (replaces testimonials) ── */
+#impact{background:var(--s1);padding:70px 6%}
+.impact-inner{max-width:1120px;margin:0 auto}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:2rem}
+.imp{background:var(--s2);padding:2rem 1.5rem;text-align:center;transition:background .2s}
+.imp:hover{background:var(--s3)}
+.imp-num{font-size:2rem;font-weight:900;letter-spacing:-.04em;background:linear-gradient(135deg,var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;margin-bottom:.3rem}
+.imp-label{font-size:.7rem;color:var(--t2);line-height:1.5}
+.imp-sub{font-size:.65rem;color:var(--t3);margin-top:.15rem}
+.companies-row{display:flex;align-items:center;gap:1rem;justify-content:center;flex-wrap:wrap}
+.comp-pill{background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:8px;padding:.5rem 1.1rem;font-size:.72rem;font-weight:600;color:var(--t2);letter-spacing:.04em;display:flex;align-items:center;gap:.5rem;transition:all .2s}
+.comp-pill:hover{border-color:var(--bd2);color:var(--tx)}
+.comp-dot{width:6px;height:6px;border-radius:50%}
+
+/* ── BLOG ── */
+#blog{background:var(--bg)}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.bc2{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r2);padding:1.7rem;transition:all .25s;display:flex;flex-direction:column}
+.bc2:hover{border-color:rgba(124,92,252,.25);transform:translateY(-3px)}
+.bc2-meta{display:flex;align-items:center;gap:.55rem;margin-bottom:.85rem}
+.bc2-cat{font-size:.62rem;background:rgba(124,92,252,.09);color:var(--a2);padding:.18rem .58rem;border-radius:999px;border:1px solid rgba(124,92,252,.2);text-transform:uppercase;letter-spacing:.08em}
+.bc2-date{font-size:.68rem;color:var(--t3)}
+.bc2 h3{font-size:.9rem;font-weight:700;line-height:1.45;margin-bottom:.45rem;letter-spacing:-.01em}
+.bc2 p{font-size:.78rem;color:var(--t2);line-height:1.62;flex:1}
+.bc2-link{margin-top:1.1rem;font-size:.76rem;color:var(--a2);font-weight:600;display:inline-flex;align-items:center;gap:.3rem;transition:gap .2s}
+.bc2:hover .bc2-link{gap:.55rem}
+
+/* ── CONTACT ── */
+#contact{background:var(--s1)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;max-width:1120px;margin:0 auto}
+.cl-eyebrow{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--a);margin-bottom:.55rem}
+.cl h2{font-size:clamp(1.7rem,3vw,2.4rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem;line-height:1.15}
+.cl-sub{font-size:.86rem;color:var(--t2);line-height:1.78;margin-bottom:1.6rem}
+.who-box{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:1.1rem 1.3rem;margin-bottom:1.6rem}
+.who-label{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:.6rem;font-weight:700}
+.who-item{display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--t2);margin-bottom:.45rem;line-height:1.5}
+.who-item:last-child{margin-bottom:0}
+.who-dot{width:5px;height:5px;border-radius:50%;background:var(--a);flex-shrink:0}
+.contact-links{display:flex;flex-direction:column;gap:.65rem}
+.clink{display:inline-flex;align-items:center;gap:.65rem;font-size:.82rem;color:var(--t2);transition:color .2s;padding:.4rem 0}
+.clink:hover{color:var(--tx)}
+.clink-lbl{font-size:.65rem;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;width:80px;flex-shrink:0}
+.form{display:flex;flex-direction:column;gap:.8rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.form input,.form textarea,.form select{width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:.78rem .95rem;border-radius:var(--r);font-size:.84rem;outline:none;transition:border .2s;font-family:inherit;-webkit-appearance:none}
+.form input::placeholder,.form textarea::placeholder{color:var(--t3)}
+.form input:focus,.form textarea:focus,.form select:focus{border-color:rgba(124,92,252,.45)}
+.form select option{background:var(--s2)}
+.form textarea{resize:vertical;min-height:118px}
+.response-note{font-size:.7rem;color:var(--t3);display:flex;align-items:center;gap:.4rem}
+.form-btn{background:var(--a);color:#fff;padding:.88rem;border-radius:var(--r);border:none;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .25s;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.form-btn:hover{background:var(--a2);transform:translateY(-2px);box-shadow:0 12px 35px rgba(124,92,252,.28)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg);border-top:1px solid var(--bd);padding:2rem 6%}
+.footer-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.f-brand{font-size:.72rem;font-weight:800;color:var(--t3);letter-spacing:.12em;text-transform:uppercase}
+.f-links{display:flex;gap:1.4rem}
+.f-links a{font-size:.7rem;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+.f-links a:hover{color:var(--t2)}
+.f-social{display:flex;gap:.6rem}
+.f-soc{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.03);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--t3);transition:all .2s;font-weight:700}
+.f-soc:hover{color:var(--tx);border-color:var(--bd2)}
+.f-copy{font-size:.68rem;color:var(--t3)}
+
+@media(max-width:1024px){
+  .apex-pipeline{grid-template-columns:repeat(3,1fr)}
+  .toolkit-grid,.svc-grid,.blog-grid{grid-template-columns:repeat(2,1fr)}
+  .bento{grid-template-columns:1fr}.bc.span3,.bc.span2{grid-column:span 1}
+  .cs-arc{grid-template-columns:1fr}
+  .outcomes{grid-template-columns:repeat(2,1fr)}
+  .impact-grid{grid-template-columns:repeat(2,1fr)}
+  .contact-grid{grid-template-columns:1fr;gap:3rem}
+  .nav-links{display:none}
+}
+@media(max-width:640px){
+  .hero-metrics{grid-template-columns:repeat(2,1fr)}
+  .toolkit-grid,.svc-grid,.blog-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .apex-top{grid-template-columns:1fr}
+  .apex-pipeline{grid-template-columns:repeat(2,1fr)}
+  footer{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner" id="navInner">
+    <div class="nav-logo">
+      <div class="nav-avatar">ML</div>
+      <div class="nav-brand">Motionova Labs</div>
+    </div>
+    <div class="nav-links">
+      <a href="#philosophy">Approach</a>
+      <a href="#apex-feature">APEX</a>
+      <a href="#experience">Experience</a>
+      <a href="#toolkit">AI Toolkit</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Work With Me</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><div class="pulse"></div>Available for advisory &amp; fractional PM</div>
+    <div class="hero-name">Senior Product Manager · Los Angeles, CA</div>
+    <h1 class="hero-title">
+      <span class="hero-title-static">I build products that</span>
+      <span class="hero-typewriter" id="typewriter"></span><span class="cursor"></span>
+    </h1>
+    <p class="hero-sub">8+ years leading product at venture-backed startups and enterprise platforms. Marketplaces, platform APIs, and operations-heavy SaaS — from discovery to Series C.</p>
+    <div class="hero-ctas">
+      <a href="#apex-feature" class="btn-p">See APEX Agent <span class="arr">→</span></a>
+      <a href="#contact" class="btn-s">Start a Conversation <span class="arr">↗</span></a>
+    </div>
+    <div class="hero-metrics">
+      <div class="hm"><div class="hm-num" data-target="100" data-prefix="$" data-suffix="M+">$0M+</div><div class="hm-label">Venture Funding Supported</div></div>
+      <div class="hm"><div class="hm-num" data-target="34" data-suffix="%">0%</div><div class="hm-label">Revenue Growth Delivered</div></div>
+      <div class="hm"><div class="hm-num" data-target="50" data-suffix="K+">0K+</div><div class="hm-label">Active Users Scaled</div></div>
+      <div class="hm"><div class="hm-num" data-target="8" data-suffix="+">0+</div><div class="hm-label">Years in Product</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div id="logos">
+  <div class="logos-label">Platforms &amp; companies shipped for</div>
+  <div class="logos-row">
+    <div class="lp">Kitchen United</div>
+    <div class="lp">Google Ventures</div>
+    <div class="lp">Connected Dealer Services</div>
+    <div class="lp">Cypress Creek Renewables</div>
+    <div class="lp">Verengo Solar</div>
+    <div class="lp">Uber Eats API</div>
+    <div class="lp">DoorDash API</div>
+    <div class="lp">Grubhub API</div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<section class="sec" id="philosophy">
+  <div class="sec-inner">
+    <div class="eyebrow reveal">How I Work</div>
+    <h2 class="sec-h reveal">Product philosophy</h2>
+    <div class="rule reveal"></div>
+    <div class="bento reveal">
+      <div class="bc span3">
+        <div class="bc-num">01</div>
+        <div class="bc-h">Discovery before roadmap</div>
+        <p class="bc-p">I don't start with features. Jobs-to-be-Done research, user interviews, and behavioral data validate the right problem before a single ticket is written. Wasted sprints are a strategy failure, not an engineering one.</p>
+        <div class="bc-glow"></div>
+      </div>
+      <div class="bc span3">
+        <div class="bc-num">02</div>
+        <div class="bc-h">Metrics that move the business</div>
+        <p class="bc-p">I anchor every roadmap to revenue, retention, and activation — and build experimentation loops with Heap, Segment, and cohort analysis to prove causation, not correlation. Vanity metrics are meaningless to investors.</p>
+        <div class="bc-glow"></div>
+      </div>
+      <div class="bc span2 stat">
+        <div class="bc-stat-n">$100M</div>
+        <div class="bc-stat-l">Series C<br>funding supported</div>
+      </div>
+      <div class="bc span2 stat">
+        <div class="bc-stat-n">34%</div>
+        <div class="bc-stat-l">Revenue growth<br>Kitchen United</div>
+      </div>
+      <div class="bc span2">
+        <div class="bc-num">03</div>
+        <div class="bc-h">Operators make the best PMs</div>
+        <p class="bc-p" style="font-size:.76rem">My edge: I've partnered with operations teams on the ground — ghost kitchens, dealership networks, utility grid operators. Products that ignore operational reality don't scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APEX FEATURE -->
+<section id="apex-feature">
+  <div class="sec-inner" style="max-width:1120px;margin:0 auto">
+    <div class="eyebrow reveal">Capstone AI Project</div>
+    <h2 class="sec-h reveal">The most advanced PM agent built by a practitioner</h2>
+    <div class="rule reveal"></div>
+    <div class="apex-shell reveal">
+      <div class="apex-top">
+        <div>
+          <div class="apex-badge">★ Capstone · AI Agent · Live Demo</div>
+          <div class="apex-title">APEX — <span>AI Product Executive Agent</span></div>
+          <p class="apex-sub">A 6-stage autonomous reasoning agent that mirrors what a senior PM actually does in a week. Raw signal in. Board-ready strategy out. Live reasoning trace at every step. Amazon 6-Pager or Google PRFAQ on demand.</p>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.3rem">
+            <a href="https://eval4576.github.io/apex-agent/" target="_blank" class="apex-cta">Launch Live Demo →</a>
+            <a href="https://github.com/eval4576/apex-agent" target="_blank" class="btn-s" style="padding:.72rem 1.5rem;font-size:.82rem">View on GitHub ↗</a>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.6rem;min-width:180px">
+          <div class="apex-stat" style="background:rgba(124,92,252,.06);border:1px solid rgba(124,92,252,.15);border-radius:var(--r);padding:1rem;text-align:center">
+            <div class="apex-stat-num">6</div>
+            <div class="apex-stat-label">Autonomous Stages</div>
+          </div>
+          <div class="apex-stat" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:1rem;text-align:center">
+            <div class="apex-stat-num" style="color:var(--green)">2</div>
+            <div class="apex-stat-label">Brief Formats</div>
+          </div>
+          <div class="apex-stat" style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:var(--r);padding:1rem;text-align:center">
+            <div class="apex-stat-num" style="color:var(--gold)">4</div>
+            <div class="apex-stat-label">Example Scenarios</div>
+          </div>
+        </div>
+      </div>
+      <div class="apex-pipeline">
+        <div class="ap-stage"><div class="ap-ico">📥</div><div class="ap-num">Stage 01</div><div class="ap-name">Signal Ingest</div><div class="ap-principle">"Real signal is messy"</div></div>
+        <div class="ap-stage"><div class="ap-ico">🧩</div><div class="ap-num">Stage 02</div><div class="ap-name">Synthesis Engine</div><div class="ap-principle">"Detect conflict"</div></div>
+        <div class="ap-stage"><div class="ap-ico">🎯</div><div class="ap-num">Stage 03</div><div class="ap-name">Strategic Diagnosis</div><div class="ap-principle">"4-axis scoring"</div></div>
+        <div class="ap-stage"><div class="ap-ico">⚔️</div><div class="ap-num">Stage 04</div><div class="ap-name">Devil's Advocate</div><div class="ap-principle">"Challenge everything"</div></div>
+        <div class="ap-stage"><div class="ap-ico">♟️</div><div class="ap-num">Stage 05</div><div class="ap-name">Strategic Bet</div><div class="ap-principle">"Kill criteria required"</div></div>
+        <div class="ap-stage"><div class="ap-ico">📋</div><div class="ap-num">Stage 06</div><div class="ap-name">Executive Brief</div><div class="ap-principle">"6-Pager or PRFAQ"</div></div>
+      </div>
+      <div class="apex-bottom">
+        <div>
+          <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:.5rem">Built with</div>
+          <div class="apex-tags">
+            <span class="atag">Claude API</span><span class="atag">Multi-turn Reasoning</span><span class="atag">State Passing</span><span class="atag">Vanilla JS</span><span class="atag">GitHub Pages</span>
+          </div>
+        </div>
+        <div style="font-size:.75rem;color:var(--t3);max-width:320px;line-height:1.6;margin-left:auto">
+          "No other PM candidate has a working agent that demonstrates signal conflict detection, anti-portfolio reasoning, and devil's advocate stress-testing in a single pipeline."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section class="sec" id="case-study" style="background:var(--s1)">
+  <div class="sec-inner">
+    <div class="eyebrow reveal">Featured Work</div>
+    <h2 class="sec-h reveal">Marquee case study</h2>
+    <div class="rule reveal"></div>
+    <div class="cs-shell reveal">
+      <div class="cs-top">
+        <div class="cs-badge">★ Series C · $100M Raise · $500M Valuation</div>
+        <div class="cs-h">Kitchen United — Scaling a Ghost Kitchen Marketplace to Series C</div>
+        <div class="cs-meta">Senior Product Manager · Sept 2019 – May 2023 · Pasadena, CA · Google Ventures Portfolio</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.35rem">
+          <span class="tag">Multi-sided Marketplace</span><span class="tag">B2B/B2C SaaS</span><span class="tag">Delivery APIs</span><span class="tag">iOS · Android · Kiosk</span><span class="tag">Heap · Segment</span>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-arc">
+          <div class="ca"><div class="ca-label">The Problem</div><p>A three-sided marketplace — ghost kitchen operators, restaurant brands, consumers — fragmented across iOS, Android, kiosks, and delivery platforms. Cart abandonment high, ordering workflows broken, platform lacked scalability needed to attract Series C investors.</p></div>
+          <div class="ca"><div class="ca-label">My Approach</div><p>Built a data-driven experimentation culture using Heap, Segment, and GA. Deep discovery with operators, consumers, and delivery partners surfaced friction across ordering, inventory, and fulfillment. Directed 12+ cross-functional team members across Engineering, Design, and QA.</p></div>
+          <div class="ca"><div class="ca-label">What We Shipped</div><p>Multi-restaurant ordering flows, real-time inventory sync, kitchen capacity management, and API integrations with Uber Eats, DoorDash, and Grubhub — across 30+ physical locations. Checkout optimized via session analysis and A/B testing.</p></div>
+        </div>
+        <div class="eyebrow" style="margin-bottom:.7rem">Outcomes</div>
+        <div class="outcomes">
+          <div class="oc"><div class="oc-num g">34%</div><div class="oc-label">Revenue growth through platform scaling</div></div>
+          <div class="oc"><div class="oc-num a">−25%</div><div class="oc-label">Cart abandonment via checkout optimization</div></div>
+          <div class="oc"><div class="oc-num go">$100M</div><div class="oc-label">Series C secured — platform strategy instrumental</div></div>
+          <div class="oc"><div class="oc-num b">+20%</div><div class="oc-label">Engagement via personalization &amp; CX</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="sec" id="experience">
+  <div class="sec-inner">
+    <div class="eyebrow reveal">Career</div>
+    <h2 class="sec-h reveal">Professional experience</h2>
+    <div class="rule reveal"></div>
+    <div class="tl">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-head"><div class="tl-co">Motionova Labs</div><div class="tl-pill">Apr 2024 – Present</div></div>
+          <div class="tl-role">Founder / Strategic Advisor</div>
+          <div class="tl-loc">Remote</div>
+          <div class="tl-desc">Advising early-stage founders on product strategy, discovery practices, and MVP validation for SaaS and workflow automation products.</div>
+          <div class="tags"><span class="tag">Product Strategy</span><span class="tag">MVP Validation</span><span class="tag">SaaS</span><span class="tag">Workflow Automation</span></div>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-head"><div class="tl-co">Connected Dealer Services (CarRX)</div><div class="tl-pill">Sept 2023 – July 2024</div></div>
+          <div class="tl-role">Product Manager, Automotive SaaS Platform</div>
+          <div class="tl-loc">Irvine, CA</div>
+          <div class="tl-desc">Led mobile-first platform strategy for an automotive marketplace serving 50K+ active users across dealerships, service centers, and consumers.</div>
+          <div class="wins">
+            <div class="win"><span class="win-n">+30%</span> Repeat bookings</div>
+            <div class="win"><span class="win-n">+22%</span> Retention</div>
+            <div class="win"><span class="win-n">−40%</span> Post-launch issues</div>
+          </div>
+          <div class="tags"><span class="tag">Automotive SaaS</span><span class="tag">Mobile-first</span><span class="tag">B2B/B2C</span><span class="tag">Enterprise</span></div>
+        </div>
+      </div>
+      <div class="tl-item featured reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="featured-banner">★ Marquee Role · Google Ventures · $100M Series C</div>
+          <div class="tl-head"><div class="tl-co">Kitchen United</div><div class="tl-pill">Sept 2019 – May 2023</div></div>
+          <div class="tl-role">Senior Product Manager, Marketplace &amp; Operations Platform</div>
+          <div class="tl-loc">Pasadena, CA</div>
+          <div class="tl-desc">Led product for a three-sided marketplace across iOS, Android, kiosks, and delivery platform APIs. Directed 12+ cross-functional team across 30+ physical locations.</div>
+          <div class="wins">
+            <div class="win"><span class="win-n">$100M</span> Series C</div>
+            <div class="win"><span class="win-n">+34%</span> Revenue growth</div>
+            <div class="win"><span class="win-n">−25%</span> Cart abandonment</div>
+            <div class="win"><span class="win-n">+18%</span> User adoption</div>
+            <div class="win"><span class="win-n">$500M</span> Valuation</div>
+          </div>
+          <div class="tags"><span class="tag">Marketplace</span><span class="tag">API Integrations</span><span class="tag">Ghost Kitchen</span><span class="tag">Heap</span><span class="tag">Segment</span><span class="tag">A/B Testing</span></div>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-head"><div class="tl-co">Cypress Creek Renewables</div><div class="tl-pill">Apr 2016 – June 2019</div></div>
+          <div class="tl-role">Technical Project Manager, Energy SaaS &amp; CRM</div>
+          <div class="tl-loc">Santa Monica, CA</div>
+          <div class="tl-desc">Led product execution for an energy management platform managing 2.4 GW of distributed solar resources for utilities and grid operators.</div>
+          <div class="wins">
+            <div class="win"><span class="win-n">+23%</span> Land acquisition leads</div>
+            <div class="win"><span class="win-n">+35%</span> Reporting accuracy</div>
+          </div>
+          <div class="tags"><span class="tag">Energy SaaS</span><span class="tag">Salesforce</span><span class="tag">Agile</span><span class="tag">ESRI</span></div>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-head"><div class="tl-co">Verengo Solar</div><div class="tl-pill">Sept 2015 – Apr 2016</div></div>
+          <div class="tl-role">Project Manager, Estimates &amp; Proposals SaaS</div>
+          <div class="tl-loc">Torrance, CA</div>
+          <div class="tl-desc">Owned quoting product for 1,000+ contractors. Launched field technician tool contributing to seven-figure ARR growth.</div>
+          <div class="wins">
+            <div class="win"><span class="win-n">−45%</span> Quoting time</div>
+            <div class="win"><span class="win-n">60%</span> Tool adoption</div>
+          </div>
+          <div class="tags"><span class="tag">Solar</span><span class="tag">Mobile-first</span><span class="tag">B2B SaaS</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI TOOLKIT -->
+<section class="sec" id="toolkit" style="background:var(--s1)">
+  <div class="sec-inner">
+    <div class="eyebrow reveal">AI PM Toolkit</div>
+    <h2 class="sec-h reveal">Live AI projects</h2>
+    <div class="rule reveal"></div>
+    <div class="toolkit-grid">
+      <div class="tk-card featured reveal">
+        <div class="tk-ico">⚡</div>
+        <div class="tk-num">Project 07 · Capstone</div>
+        <div class="tk-title">APEX — AI Product Executive Agent</div>
+        <p class="tk-desc">6-stage autonomous PM reasoning agent. Signal ingest → JTBD synthesis → 4-axis diagnosis → devil's advocate → strategic bet → Amazon 6-Pager or Google PRFAQ. Live reasoning trace at every step.</p>
+        <div class="tk-tags"><span class="tk-tag">AI Agent</span><span class="tk-tag">Multi-turn</span><span class="tk-tag">Capstone</span></div>
+        <div class="tk-footer">
+          <div class="tk-status">● Live</div>
+          <a href="https://eval4576.github.io/apex-agent/" target="_blank" class="tk-link">Launch Demo →</a>
+        </div>
+      </div>
+      <div class="tk-card reveal reveal-delay-1">
+        <div class="tk-ico">🔍</div>
+        <div class="tk-num">Project 01</div>
+        <div class="tk-title">AI Discovery Interview Analyzer</div>
+        <p class="tk-desc">Paste raw user interview notes. Get structured JTBD extraction, pain point clustering, opportunity scoring, conflict detection, and PM recommendations. Built for real-world messy signal.</p>
+        <div class="tk-tags"><span class="tk-tag">JTBD</span><span class="tk-tag">Discovery</span><span class="tk-tag">Synthesis</span></div>
+        <div class="tk-footer">
+          <div class="tk-status">● Live</div>
+          <a href="https://eval4576.github.io/AI-Discovery-Tool-Analyzer/" target="_blank" class="tk-link">Launch Demo →</a>
+        </div>
+      </div>
+      <div class="tk-card reveal reveal-delay-2">
+        <div class="tk-ico">📊</div>
+        <div class="tk-num">Project 02</div>
+        <div class="tk-title">AI Metrics Dashboard + Narrative</div>
+        <p class="tk-desc">Live product metrics dashboard with AI-generated weekly PM narrative — wins, watch items, funnel insight, retention signal, and recommended action. Three datasets included.</p>
+        <div class="tk-tags"><span class="tk-tag">Metrics</span><span class="tk-tag">Dashboard</span><span class="tk-tag">Narrative</span></div>
+        <div class="tk-footer">
+          <div class="tk-status">● Live</div>
+          <a href="https://eval4576.github.io/ai-metrics-dashboard/" target="_blank" class="tk-link">Launch Demo →</a>
+        </div>
+      </div>
+      <div class="tk-card reveal reveal-delay-3">
+        <div class="tk-ico">📋</div>
+        <div class="tk-num">Project 03</div>
+        <div class="tk-title">AI PRD Generator</div>
+        <p class="tk-desc">Paste a product problem statement and get a complete structured PRD — user stories, success metrics, scope definition, risks, open questions, and phased timeline.</p>
+        <div class="tk-tags"><span class="tk-tag">PRD</span><span class="tk-tag">Workflow</span><span class="tk-tag">Documentation</span></div>
+        <div class="tk-footer">
+          <div class="tk-status">● Live</div>
+          <a href="https://eval4576.github.io/ai-prd-generator/" target="_blank" class="tk-link">Launch Demo →</a>
+        </div>
+      </div>
+      <div class="tk-card reveal reveal-delay-4">
+        <div class="tk-ico">🏪</div>
+        <div class="tk-num">Project 04</div>
+        <div class="tk-title">Marketplace AI Opportunity Audit</div>
+        <p class="tk-desc">Strategic AI opportunity framework applied to real marketplace architecture — mapping where AI adds value across discovery, matching, pricing, fulfillment, and retention.</p>
+        <div class="tk-tags"><span class="tk-tag">Marketplace</span><span class="tk-tag">AI Strategy</span><span class="tk-tag">Case Study</span></div>
+        <div class="tk-footer">
+          <div class="tk-status soon">○ Coming Soon</div>
+        </div>
+      </div>
+      <div class="tk-card reveal reveal-delay-4">
+        <div class="tk-ico">✦</div>
+        <div class="tk-num">Project 06</div>
+        <div class="tk-title">Product Strategy Memo Series</div>
+        <p class="tk-desc">Long-form strategy memos on AI product thinking — marketplace mechanics, discovery frameworks, and the fractional PM playbook. Published as markdown on GitHub.</p>
+        <div class="tk-tags"><span class="tk-tag">Strategy</span><span class="tk-tag">Thought Leadership</span><span class="tk-tag">Memos</span></div>
+        <div class="tk-footer">
+          <div class="tk-status soon">○ Coming Soon</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="sec" id="services">
+  <div class="sec-inner">
+    <div class="eyebrow reveal">What I Offer</div>
+    <h2 class="sec-h reveal">Advisory services</h2>
+    <div class="rule reveal"></div>
+    <div class="svc-grid reveal">
+      <div class="svc"><div class="svc-ico">🗺️</div><h3>Product Strategy &amp; Roadmapping</h3><p>Vision definition, ruthless prioritization, and roadmaps built around business outcomes — not feature requests or stakeholder noise.</p><div class="svc-type">Advisory · Fractional</div></div>
+      <div class="svc"><div class="svc-ico">🔍</div><h3>Discovery &amp; JTBD Research</h3><p>Jobs-to-be-Done frameworks, user interviews, and behavioral data to validate hypotheses before committing engineering cycles.</p><div class="svc-type">Sprint · Ongoing</div></div>
+      <div class="svc"><div class="svc-ico">🏪</div><h3>Marketplace Product Design</h3><p>Multi-sided marketplace mechanics — supply/demand balance, onboarding flows, incentive structures, network effect activation.</p><div class="svc-type">Advisory · Fractional</div></div>
+      <div class="svc"><div class="svc-ico">🚀</div><h3>MVP Validation &amp; Launch</h3><p>Lean, structured discovery sprints to help founders ship the right first product and minimize costly pivots post-launch.</p><div class="svc-type">Project-based</div></div>
+      <div class="svc"><div class="svc-ico">📊</div><h3>Experimentation &amp; Analytics</h3><p>Build a metrics culture using Heap, Segment, and GA. Turn user behavior into product decisions that compound over time.</p><div class="svc-type">Advisory · Audit</div></div>
+      <div class="svc"><div class="svc-ico">🤝</div><h3>Fractional PM Leadership</h3><p>Embedded senior PM expertise for early-stage teams that need experienced product leadership without a full-time hire.</p><div class="svc-type">Retainer</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT STRIP -->
+<section id="impact">
+  <div class="impact-inner">
+    <div class="eyebrow reveal" style="text-align:center;margin-bottom:1.2rem">By The Numbers</div>
+    <div class="impact-grid reveal">
+      <div class="imp"><div class="imp-num">$100M+</div><div class="imp-label">Venture funding supported</div><div class="imp-sub">Kitchen United Series C</div></div>
+      <div class="imp"><div class="imp-num">34%</div><div class="imp-label">Revenue growth delivered</div><div class="imp-sub">Platform scaling</div></div>
+      <div class="imp"><div class="imp-num">50K+</div><div class="imp-label">Active users scaled to</div><div class="imp-sub">CarRX platform</div></div>
+      <div class="imp"><div class="imp-num">8+</div><div class="imp-label">Years in product</div><div class="imp-sub">Across 5 industries</div></div>
+    </div>
+    <div class="companies-row reveal">
+      <div class="comp-pill"><div class="comp-dot" style="background:var(--a)"></div>Multi-sided Marketplaces</div>
+      <div class="comp-pill"><div class="comp-dot" style="background:var(--green)"></div>Platform API Products</div>
+      <div class="comp-pill"><div class="comp-dot" style="background:var(--gold)"></div>B2B SaaS</div>
+      <div class="comp-pill"><div class="comp-dot" style="background:var(--blue)"></div>Energy &amp; Infrastructure</div>
+      <div class="comp-pill"><div class="comp-dot" style="background:var(--red)"></div>Automotive Tech</div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="sec" id="blog">
+  <div class="sec-inner">
+    <div class="eyebrow reveal">Thinking Out Loud</div>
+    <h2 class="sec-h reveal">Articles &amp; frameworks</h2>
+    <div class="rule reveal"></div>
+    <div class="blog-grid">
+      <div class="bc2 reveal"><div class="bc2-meta"><span class="bc2-cat">Discovery</span><span class="bc2-date">Coming Soon</span></div><h3>Why Most Startups Build Before They Understand the Job to Be Done</h3><p>The most expensive mistake in product — and the discovery framework that fixes it before a single line of code is written.</p><a href="#" class="bc2-link">Read Article →</a></div>
+      <div class="bc2 reveal reveal-delay-1"><div class="bc2-meta"><span class="bc2-cat">Marketplaces</span><span class="bc2-date">Coming Soon</span></div><h3>Cracking the Multi-sided Marketplace: Lessons from a $500M Platform</h3><p>Cold start problems, incentive design, and the decisions that helped unlock a $100M Series C at Kitchen United.</p><a href="#" class="bc2-link">Read Article →</a></div>
+      <div class="bc2 reveal reveal-delay-2"><div class="bc2-meta"><span class="bc2-cat">Leadership</span><span class="bc2-date">Coming Soon</span></div><h3>The Fractional PM Playbook: Senior Product Leadership Without the Full-time Hire</h3><p>How early-stage founders leverage embedded PM expertise to accelerate growth and avoid expensive missteps.</p><a href="#" class="bc2-link">Read Article →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact" style="background:var(--s1)">
+  <div class="contact-grid">
+    <div class="cl reveal">
+      <div class="cl-eyebrow">Get In Touch</div>
+      <h2 class="cl">Let's build something that matters.</h2>
+      <p class="cl-sub">I work best with founders and teams who are serious about doing the discovery work before committing to a roadmap. If that's you, I'd love to hear what you're working on.</p>
+      <div class="who-box">
+        <div class="who-label">Who I work with</div>
+        <div class="who-item"><div class="who-dot"></div>Early-stage founders validating product-market fit</div>
+        <div class="who-item"><div class="who-dot"></div>Growth-stage teams needing senior PM leadership</div>
+        <div class="who-item"><div class="who-dot"></div>Marketplace and platform companies scaling to Series B+</div>
+        <div class="who-item"><div class="who-dot"></div>Investors needing product diligence on portfolio companies</div>
+      </div>
+      <div class="contact-links">
+        <a href="#" class="clink"><span class="clink-lbl">LinkedIn</span>[Your LinkedIn URL]</a>
+        <a href="https://github.com/eval4576" class="clink" target="_blank"><span class="clink-lbl">GitHub</span>github.com/eval4576</a>
+        <a href="mailto:hello@motionovalabs.com" class="clink"><span class="clink-lbl">Email</span>hello@motionovalabs.com</a>
+        <div class="clink"><span class="clink-lbl">Response</span>Within 24 hours</div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="form">
+        <div class="form-row">
+          <input type="text" placeholder="Your name"/>
+          <input type="email" placeholder="Email address"/>
+        </div>
+        <input type="text" placeholder="Company / project"/>
+        <select>
+          <option value="" disabled selected>Type of engagement</option>
+          <option>Fractional PM (retainer)</option>
+          <option>Product strategy advisory</option>
+          <option>Discovery / JTBD sprint</option>
+          <option>MVP validation</option>
+          <option>Investor diligence</option>
+          <option>Other</option>
+        </select>
+        <textarea placeholder="Tell me what you're building and where you're stuck..."></textarea>
+        <div class="response-note">⚡ Typical response within 24 hours</div>
+        <button class="form-btn">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="f-brand">Motionova Labs</div>
+    <div class="f-links">
+      <a href="#philosophy">Approach</a>
+      <a href="#apex-feature">APEX</a>
+      <a href="#experience">Experience</a>
+      <a href="#toolkit">AI Toolkit</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="f-social">
+      <a href="#" class="f-soc" title="LinkedIn">in</a>
+      <a href="https://github.com/eval4576" class="f-soc" target="_blank" title="GitHub">gh</a>
+    </div>
+    <div class="f-copy">© 2026 · Senior Product Manager · Los Angeles, CA</div>
+  </div>
+</footer>
+
+<script>
+// ── TYPEWRITER ────────────────────────────────────────────
+const phrases=['close funding rounds.','scale to 50K+ users.','drive 34% revenue growth.','earn $100M Series C rounds.','survive the devil\'s advocate.'];
+let pi=0,ci=0,deleting=false;
+const tw=document.getElementById('typewriter');
+function type(){
+  const phrase=phrases[pi];
+  if(!deleting){
+    tw.textContent=phrase.slice(0,ci+1);
+    ci++;
+    if(ci===phrase.length){deleting=true;setTimeout(type,2200);return;}
+  } else {
+    tw.textContent=phrase.slice(0,ci-1);
+    ci--;
+    if(ci===0){deleting=false;pi=(pi+1)%phrases.length;}
+  }
+  setTimeout(type,deleting?45:82);
+}
+setTimeout(type,900);
+
+// ── SCROLL NAV ────────────────────────────────────────────
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navInner');
+  if(nav)nav.className='nav-inner'+(window.scrollY>60?' scrolled':'');
+});
+
+// ── COUNTER ANIMATION ─────────────────────────────────────
+function animateCounter(el){
+  const target=parseInt(el.dataset.target);
+  const prefix=el.dataset.prefix||'';
+  const suffix=el.dataset.suffix||'';
+  let current=0;
+  const duration=1800;
+  const step=target/60;
+  const interval=duration/60;
+  const timer=setInterval(()=>{
+    current=Math.min(current+step,target);
+    el.textContent=prefix+Math.round(current)+suffix;
+    if(current>=target)clearInterval(timer);
+  },interval);
+}
+
+// ── INTERSECTION OBSERVER ─────────────────────────────────
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // trigger counters when hero metrics visible
+      if(e.target.classList.contains('hm-num')&&e.target.dataset.target){
+        animateCounter(e.target);
+      }
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+document.querySelectorAll('.hm-num[data-target]').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
