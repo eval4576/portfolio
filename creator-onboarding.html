@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Solin · AI Creator Onboarding</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#222;
+  --a:#7c5cfc;--a2:#a78bfa;--green:#10b981;--gold:#f59e0b;--red:#f87171;--blue:#60a5fa;
+  --tx:#f0f0f0;--t2:#aaa;--t3:#666;--bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.14);
+}
+html{font-size:15px}
+body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;max-width:420px;margin:0 auto}
+
+.status-bar{display:flex;justify-content:space-between;padding:.5rem 1.2rem;font-size:.72rem;color:var(--t3)}
+.app-header{padding:.5rem 1.2rem 1rem;display:flex;align-items:center;justify-content:space-between}
+.app-logo{font-size:.8rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--a2)}
+
+/* BEFORE/AFTER BANNER */
+.ba-banner{margin:0 1.2rem 1.2rem;background:linear-gradient(135deg,rgba(124,92,252,.1),rgba(16,185,129,.06));border:1px solid rgba(124,92,252,.2);border-radius:14px;padding:1rem 1.2rem}
+.ba-label{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:.6rem;font-weight:700}
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.ba-item{text-align:center}
+.ba-num{font-size:1.4rem;font-weight:900;line-height:1}
+.ba-sub{font-size:.65rem;color:var(--t3);margin-top:.2rem;line-height:1.4}
+
+/* PROGRESS */
+.progress-section{padding:0 1.2rem 1rem}
+.progress-label{display:flex;justify-content:space-between;margin-bottom:.5rem}
+.prog-title{font-size:.72rem;font-weight:700;color:var(--tx)}
+.prog-sub{font-size:.7rem;color:var(--t3)}
+.progress-bar{height:5px;background:var(--s3);border-radius:3px;overflow:hidden;margin-bottom:1rem}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--a),var(--a2));border-radius:3px;transition:width .5s ease}
+.steps-row{display:flex;gap:.35rem}
+.step-pill{flex:1;padding:.35rem .2rem;border-radius:7px;border:1px solid var(--bd);text-align:center;font-size:.6rem;color:var(--t3);transition:all .2s;cursor:pointer}
+.step-pill.done{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.06);color:var(--green)}
+.step-pill.active{border-color:rgba(124,92,252,.35);background:rgba(124,92,252,.08);color:var(--a2);font-weight:700}
+
+/* MAIN FLOW */
+.flow{padding:0 1.2rem 1.2rem}
+.flow-step{display:none}
+.flow-step.active{display:block}
+
+/* AI INPUT CARD */
+.ai-card{background:var(--s1);border:1px solid var(--bd);border-radius:18px;padding:1.3rem;margin-bottom:1rem}
+.ai-card-header{display:flex;align-items:center;gap:.65rem;margin-bottom:.85rem}
+.ai-card-ico{width:30px;height:30px;border-radius:9px;background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.25);display:flex;align-items:center;justify-content:center;font-size:.88rem}
+.ai-card-title{font-size:.88rem;font-weight:700}
+.ai-card-sub{font-size:.7rem;color:var(--t3);margin-top:.08rem}
+.ai-prompt{font-size:.78rem;color:var(--t2);margin-bottom:.85rem;line-height:1.6;padding:.75rem;background:var(--s2);border-radius:10px;border:1px solid var(--bd)}
+.ai-input{width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:.8rem 1rem;border-radius:12px;font-size:.84rem;outline:none;margin-bottom:.7rem;font-family:inherit;transition:border .2s;resize:vertical;min-height:80px}
+.ai-input:focus{border-color:rgba(124,92,252,.5)}
+.ai-input::placeholder{color:var(--t3)}
+.ai-btn{width:100%;background:var(--a);color:#fff;padding:.82rem;border-radius:12px;border:none;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.ai-btn:hover{background:var(--a2)}
+.ai-btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* AI OUTPUT */
+.ai-output{background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.2);border-radius:14px;padding:1.1rem;margin-bottom:1rem;display:none}
+.ai-out-label{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:.65rem;font-weight:700;display:flex;align-items:center;gap:.4rem}
+.ai-out-content{font-size:.82rem;color:var(--t2);line-height:1.65}
+.ai-out-content strong{color:var(--tx)}
+.ai-edit-note{font-size:.7rem;color:var(--t3);margin-top:.6rem;font-style:italic}
+
+/* PROGRAM PREVIEW */
+.program-preview{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:1.1rem;margin-bottom:.85rem}
+.pp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem}
+.pp-title{font-size:.88rem;font-weight:700}
+.pp-badge{font-size:.62rem;background:rgba(124,92,252,.1);color:var(--a2);border:1px solid rgba(124,92,252,.2);border-radius:999px;padding:.15rem .5rem}
+.week-card{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:.85rem;margin-bottom:.5rem}
+.week-label{font-size:.65rem;font-weight:700;color:var(--a2);margin-bottom:.4rem;letter-spacing:.04em;text-transform:uppercase}
+.week-sessions{display:flex;flex-direction:column;gap:.3rem}
+.session-row{display:flex;align-items:center;gap:.55rem;font-size:.75rem;color:var(--t2)}
+.session-ico{font-size:.85rem;width:20px;text-align:center;flex-shrink:0}
+.session-name{flex:1}
+.session-dur{font-size:.68rem;color:var(--t3)}
+
+/* NEXT BTN */
+.next-btn{width:100%;background:var(--a);color:#fff;padding:.85rem;border-radius:12px;border:none;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;margin-bottom:.5rem}
+.next-btn:hover{background:var(--a2)}
+.next-btn:disabled{opacity:.4;cursor:not-allowed}
+.skip-btn{width:100%;background:transparent;color:var(--t3);padding:.6rem;border-radius:12px;border:1px solid var(--bd);font-size:.78rem;cursor:pointer;transition:all .2s;font-family:inherit}
+.skip-btn:hover{color:var(--t2);border-color:var(--bd2)}
+
+/* SUCCESS */
+.success-screen{text-align:center;padding:2rem 1.2rem;display:none}
+.success-ico{font-size:3rem;margin-bottom:1rem}
+.success-title{font-size:1.2rem;font-weight:800;margin-bottom:.4rem}
+.success-sub{font-size:.82rem;color:var(--t2);line-height:1.65;margin-bottom:1.5rem}
+.success-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;margin-bottom:1.5rem}
+.ss-card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:.9rem .5rem;text-align:center}
+.ss-num{font-size:1.3rem;font-weight:900;line-height:1}
+.ss-label{font-size:.6rem;color:var(--t3);margin-top:.2rem;line-height:1.4}
+.publish-btn{width:100%;background:linear-gradient(135deg,var(--green),#059669);color:#fff;padding:.9rem;border-radius:12px;border:none;font-size:.9rem;font-weight:800;cursor:pointer;font-family:inherit}
+
+.spinner{width:14px;height:14px;border:2px solid rgba(124,92,252,.2);border-top-color:var(--a2);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-green{border:2px solid rgba(16,185,129,.2);border-top-color:var(--green)}
+
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:rgba(10,10,10,.95);backdrop-filter:blur(16px);border-top:1px solid var(--bd);padding:.75rem 1.5rem;display:flex;justify-content:space-around}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;font-size:.6rem;color:var(--t3);cursor:pointer;letter-spacing:.04em;text-transform:uppercase}
+.nav-item.active{color:var(--a2)}
+.nav-ico{font-size:1.1rem}
+</style>
+</head>
+<body>
+
+<div class="status-bar"><span>9:41 AM</span><span>●●●</span></div>
+<div class="app-header">
+  <div class="app-logo">Solin</div>
+  <div style="font-size:.72rem;color:var(--t3)">Creator Studio</div>
+</div>
+
+<!-- BEFORE/AFTER -->
+<div class="ba-banner">
+  <div class="ba-label">AI-Assisted Onboarding Impact</div>
+  <div class="ba-row">
+    <div class="ba-item">
+      <div class="ba-num" style="color:var(--red)">11 days</div>
+      <div class="ba-sub">Before AI<br/>Manual setup</div>
+    </div>
+    <div class="ba-item">
+      <div class="ba-num" style="color:var(--green)">~3 days</div>
+      <div class="ba-sub">With AI<br/>Guided setup</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-label">
+    <span class="prog-title">Program Setup</span>
+    <span class="prog-sub" id="progSub">Step 1 of 4</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+  <div class="steps-row">
+    <div class="step-pill active" id="sp0">Concept</div>
+    <div class="step-pill" id="sp1">Structure</div>
+    <div class="step-pill" id="sp2">Content</div>
+    <div class="step-pill" id="sp3">Launch</div>
+  </div>
+</div>
+
+<!-- FLOW STEPS -->
+<div class="flow">
+
+  <!-- STEP 0: Concept -->
+  <div class="flow-step active" id="flowStep0">
+    <div class="ai-card">
+      <div class="ai-card-header">
+        <div class="ai-card-ico">✦</div>
+        <div>
+          <div class="ai-card-title">Tell me about your program</div>
+          <div class="ai-card-sub">Plain language — the AI handles the structure</div>
+        </div>
+      </div>
+      <div class="ai-prompt">Describe your program in your own words. What's it about? Who's it for? What results will they see? Don't worry about format — just talk to me like you're explaining it to a friend.</div>
+      <textarea class="ai-input" id="conceptInput" placeholder="e.g. 'I want to create an 8-week strength program for beginners who've never lifted before. 4 days a week, focused on the big 3 lifts — squat, bench, deadlift. I want people to go from afraid of the gym to confident in 2 months...'" rows="5"></textarea>
+      <button class="ai-btn" id="conceptBtn" onclick="processConcept()">✦ Build My Program Structure</button>
+    </div>
+    <div class="ai-output" id="conceptOutput">
+      <div class="ai-out-label">✓ AI Extracted Your Concept</div>
+      <div class="ai-out-content" id="conceptOutputContent"></div>
+      <div class="ai-edit-note">Review and edit above, or continue to structure your weekly sessions.</div>
+    </div>
+    <button class="next-btn" id="conceptNext" onclick="goStep(1)" style="display:none">Continue — Build Week Structure →</button>
+  </div>
+
+  <!-- STEP 1: Structure -->
+  <div class="flow-step" id="flowStep1">
+    <div class="ai-card">
+      <div class="ai-card-header">
+        <div class="ai-card-ico">🗓</div>
+        <div>
+          <div class="ai-card-title">Weekly structure</div>
+          <div class="ai-card-sub">AI-generated from your concept — edit anything</div>
+        </div>
+      </div>
+      <div class="program-preview" id="weekStructure"></div>
+    </div>
+    <div class="ai-output" style="display:block">
+      <div class="ai-out-label">✦ AI Suggestion</div>
+      <div class="ai-out-content" id="structureSuggestion">Structuring your program based on your concept...</div>
+    </div>
+    <button class="next-btn" onclick="goStep(2)">Looks Good — Add Session Details →</button>
+    <button class="skip-btn" onclick="goStep(2)">I'll customize sessions later</button>
+  </div>
+
+  <!-- STEP 2: Content -->
+  <div class="flow-step" id="flowStep2">
+    <div class="ai-card">
+      <div class="ai-card-header">
+        <div class="ai-card-ico">📝</div>
+        <div>
+          <div class="ai-card-title">Program description</div>
+          <div class="ai-card-sub">AI-drafted from your concept — make it yours</div>
+        </div>
+      </div>
+      <textarea class="ai-input" id="descInput" rows="6" placeholder="AI is generating your description..."></textarea>
+      <div style="display:flex;gap:.5rem;margin-bottom:.7rem">
+        <button style="flex:1;padding:.55rem;border-radius:9px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-size:.72rem;cursor:pointer;font-family:inherit" onclick="regenDesc()">↻ Regenerate</button>
+        <button style="flex:1;padding:.55rem;border-radius:9px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-size:.72rem;cursor:pointer;font-family:inherit" onclick="makeDesc('shorter')">Make shorter</button>
+        <button style="flex:1;padding:.55rem;border-radius:9px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-size:.72rem;cursor:pointer;font-family:inherit" onclick="makeDesc('more energetic')">More hype</button>
+      </div>
+    </div>
+    <div style="background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:1.1rem;margin-bottom:1rem">
+      <div style="font-size:.68rem;font-weight:700;color:var(--t2);margin-bottom:.65rem;letter-spacing:.04em;text-transform:uppercase">Pricing & Details</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+        <div>
+          <div style="font-size:.65rem;color:var(--t3);margin-bottom:.3rem">Price</div>
+          <input style="width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:.6rem .8rem;border-radius:9px;font-size:.84rem;outline:none;font-family:inherit" value="$47" id="priceInput"/>
+        </div>
+        <div>
+          <div style="font-size:.65rem;color:var(--t3);margin-bottom:.3rem">Level</div>
+          <select style="width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:.6rem .8rem;border-radius:9px;font-size:.84rem;outline:none;font-family:inherit;cursor:pointer">
+            <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button class="next-btn" onclick="goStep(3)">Ready — Preview & Publish →</button>
+  </div>
+
+  <!-- STEP 3: Launch -->
+  <div class="flow-step" id="flowStep3">
+    <div style="background:var(--s1);border:1px solid var(--bd);border-radius:18px;padding:1.3rem;margin-bottom:1rem">
+      <div style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:.75rem;font-weight:700">Program Preview</div>
+      <div style="display:flex;gap:.85rem;margin-bottom:.85rem">
+        <div style="width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,var(--a),var(--a2));display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0">💪</div>
+        <div>
+          <div style="font-size:.9rem;font-weight:700;margin-bottom:.2rem" id="previewTitle">Your Program</div>
+          <div style="font-size:.72rem;color:var(--t3);margin-bottom:.35rem" id="previewMeta">8 weeks · 4 days/week · Beginner</div>
+          <div style="font-size:.78rem;font-weight:700;color:var(--green)" id="previewPrice">$47</div>
+        </div>
+      </div>
+      <div style="font-size:.78rem;color:var(--t2);line-height:1.6;margin-bottom:.85rem" id="previewDesc">Your program description will appear here.</div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap" id="previewTags"></div>
+    </div>
+    <div style="background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.18);border-radius:12px;padding:1rem;margin-bottom:1rem">
+      <div style="font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem;font-weight:700">✓ Pre-launch Checklist</div>
+      <div id="checklist"></div>
+    </div>
+    <button class="next-btn" onclick="publishProgram()" id="publishBtn">🚀 Publish Program</button>
+    <button class="skip-btn" onclick="goStep(2)">← Edit Details</button>
+  </div>
+
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="successScreen">
+  <div class="success-ico">🎉</div>
+  <div class="success-title">You're live on Solin!</div>
+  <div class="success-sub">Your program is now discoverable by thousands of fitness enthusiasts. Share your link to start getting sign-ups.</div>
+  <div class="success-stats">
+    <div class="ss-card"><div class="ss-num" style="color:var(--green)">~3</div><div class="ss-label">Days from start to live</div></div>
+    <div class="ss-card"><div class="ss-num" style="color:var(--a2)">11x</div><div class="ss-label">Faster than manual setup</div></div>
+    <div class="ss-card"><div class="ss-num" style="color:var(--gold)">$47</div><div class="ss-label">Your program price</div></div>
+  </div>
+  <button class="publish-btn">Share My Program →</button>
+</div>
+
+<div style="height:5rem"></div>
+<div class="bottom-nav">
+  <div class="nav-item"><div class="nav-ico">📊</div>Dashboard</div>
+  <div class="nav-item active"><div class="nav-ico">➕</div>Create</div>
+  <div class="nav-item"><div class="nav-ico">👥</div>Members</div>
+  <div class="nav-item"><div class="nav-ico">💰</div>Earnings</div>
+</div>
+
+<script>
+let programData={title:'',duration:'',daysPerWeek:'',level:'Beginner',prefs:[],description:'',price:'$47'};
+let currentStep=0;
+
+function goStep(step){
+  document.getElementById('flowStep'+currentStep).classList.remove('active');
+  currentStep=step;
+  document.getElementById('flowStep'+step).classList.add('active');
+  const pct=[25,50,75,100][step];
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progSub').textContent=`Step ${step+1} of 4`;
+  for(let i=0;i<4;i++){
+    const el=document.getElementById('sp'+i);
+    el.className='step-pill'+(i<step?' done':i===step?' active':'');
+  }
+  if(step===2)prefillDescription();
+  if(step===3)buildPreview();
+}
+
+async function processConcept(){
+  const text=document.getElementById('conceptInput').value.trim();
+  if(!text)return;
+  const btn=document.getElementById('conceptBtn');
+  btn.innerHTML='<div class="spinner"></div> AI is structuring your program...';
+  btn.disabled=true;
+
+  try{
+    const res=await fetch('https://apex-proxy-hsjs.onrender.com',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:800,
+        messages:[{role:'user',content:`Extract program details from this creator description. Return ONLY valid JSON.
+
+Description: "${text}"
+
+Return:
+{
+  "title": "catchy program title",
+  "duration": "X weeks",
+  "daysPerWeek": number,
+  "level": "Beginner/Intermediate/Advanced",
+  "targetAudience": "who this is for",
+  "keyOutcome": "main result users will get",
+  "equipment": ["equipment needed"],
+  "tags": ["tag1","tag2","tag3"],
+  "summary": "2 sentence compelling summary of what makes this program unique"
+}`}]
+      })
+    });
+    const data=await res.json();
+    const raw=data.content.map(b=>b.text||'').join('');
+    const clean=raw.replace(/```json|```/g,'').trim();
+    const s=clean.indexOf('{');const e=clean.lastIndexOf('}');
+    const parsed=JSON.parse(clean.slice(s,e+1));
+    programData={...programData,...parsed};
+    showConceptOutput(parsed);
+    buildWeekStructure(parsed);
+  }catch(err){
+    const fallback={title:'8-Week Strength Foundation',duration:'8 weeks',daysPerWeek:4,level:'Beginner',targetAudience:'Complete beginners who want to learn proper lifting',keyOutcome:'Go from gym-afraid to confident in the big 3 lifts',equipment:['Barbell','Rack','Dumbbells'],tags:['Strength','Beginner','Powerlifting'],summary:'A systematic 8-week program that takes complete beginners through foundational strength training, focusing on squat, bench, and deadlift with progressive overload.'};
+    programData={...programData,...fallback};
+    showConceptOutput(fallback);
+    buildWeekStructure(fallback);
+  }
+  btn.innerHTML='✦ Build My Program Structure';
+  btn.disabled=false;
+}
+
+function showConceptOutput(data){
+  document.getElementById('conceptOutput').style.display='block';
+  document.getElementById('conceptOutputContent').innerHTML=`
+    <strong>${data.title}</strong><br/>
+    ${data.duration} · ${data.daysPerWeek} days/week · ${data.level}<br/>
+    <span style="color:var(--t3)">For: ${data.targetAudience}</span><br/>
+    <span style="color:var(--t3)">Outcome: ${data.keyOutcome}</span>`;
+  document.getElementById('conceptNext').style.display='block';
+  document.getElementById('previewTitle').textContent=data.title;
+  document.getElementById('previewMeta').textContent=`${data.duration} · ${data.daysPerWeek} days/week · ${data.level}`;
+  if(data.tags)document.getElementById('previewTags').innerHTML=data.tags.map(t=>`<span style="font-size:.65rem;background:rgba(124,92,252,.1);color:var(--a2);border:1px solid rgba(124,92,252,.18);border-radius:999px;padding:.15rem .5rem">${t}</span>`).join('');
+}
+
+function buildWeekStructure(data){
+  const days=data.daysPerWeek||4;
+  const dur=parseInt(data.duration)||8;
+  const sessions=[
+    {ico:'🏋️',name:'Lower Body — Squat Focus',dur:'45-55 min'},
+    {ico:'💪',name:'Upper Body — Push',dur:'40-50 min'},
+    {ico:'🔄',name:'Lower Body — Hinge Focus',dur:'45-55 min'},
+    {ico:'🤜',name:'Upper Body — Pull',dur:'40-50 min'},
+  ].slice(0,days);
+  document.getElementById('weekStructure').innerHTML=`
+    <div class="pp-header"><div class="pp-title">Week Structure (repeats ${dur}x)</div><div class="pp-badge">${days} days/week</div></div>
+    <div class="week-card">
+      <div class="week-label">Weekly Template</div>
+      <div class="week-sessions">${sessions.map((s,i)=>`
+        <div class="session-row"><div class="session-ico">${s.ico}</div><div class="session-name">Day ${i+1}: ${s.name}</div><div class="session-dur">${s.dur}</div></div>`).join('')}
+        ${days<5?`<div class="session-row"><div class="session-ico">😴</div><div class="session-name" style="color:var(--t3)">Rest days: recovery & nutrition focus</div></div>`:''}
+      </div>
+    </div>`;
+  document.getElementById('structureSuggestion').innerHTML=`Based on your concept, I've structured this as a <strong>linear progression model</strong> — same movements each week with increasing load. This is optimal for beginners because it builds motor patterns through repetition. Progressive overload is built in automatically.`;
+}
+
+async function prefillDescription(){
+  const desc=document.getElementById('descInput');
+  if(desc.value)return;
+  desc.value='Generating your program description...';
+  desc.disabled=true;
+  try{
+    const res=await fetch('https://apex-proxy-hsjs.onrender.com',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:400,
+        messages:[{role:'user',content:`Write a compelling Solin program description for: ${programData.title}. 
+Target: ${programData.targetAudience}. Outcome: ${programData.keyOutcome}. Duration: ${programData.duration}.
+Write 3-4 sentences. Energetic, direct, results-focused. No fluff. Start with the transformation.`}]
+      })
+    });
+    const data=await res.json();
+    desc.value=data.content.map(b=>b.text||'').join('').trim();
+    programData.description=desc.value;
+  }catch(e){
+    desc.value=`Transform your relationship with strength training in ${programData.duration||'8 weeks'}. This program is built for ${programData.targetAudience||'beginners'} who are ready to commit to real results. ${programData.keyOutcome||'You will build a foundation of strength and confidence that lasts a lifetime.'}`;
+    programData.description=desc.value;
+  }
+  desc.disabled=false;
+}
+
+function regenDesc(){prefillDescription();}
+
+function makeDesc(instruction){
+  const desc=document.getElementById('descInput');
+  const orig=desc.value;
+  desc.value=instruction==='shorter'?orig.split('. ').slice(0,2).join('. ')+'.':`🔥 ${orig} This is YOUR moment.`;
+}
+
+function buildPreview(){
+  programData.description=document.getElementById('descInput').value||programData.description;
+  programData.price=document.getElementById('priceInput').value||'$47';
+  document.getElementById('previewDesc').textContent=programData.description;
+  document.getElementById('previewPrice').textContent=programData.price;
+  document.getElementById('checklist').innerHTML=[
+    ['Program title set',!!programData.title],
+    ['Weekly structure defined',true],
+    ['Program description written',!!programData.description],
+    ['Price configured',true],
+    ['Equipment list complete',!!(programData.equipment&&programData.equipment.length)],
+  ].map(([label,done])=>`
+    <div style="display:flex;align-items:center;gap:.55rem;font-size:.78rem;color:${done?'var(--t2)':'var(--t3)'};padding:.3rem 0">
+      <span style="color:${done?'var(--green)':'var(--t3)'};font-size:.85rem">${done?'✓':'○'}</span>
+      ${label}
+    </div>`).join('');
+}
+
+function publishProgram(){
+  const btn=document.getElementById('publishBtn');
+  btn.innerHTML='<div class="spinner spinner-green" style="border-top-color:var(--green)"></div> Publishing...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    document.querySelector('.flow').style.display='none';
+    document.querySelector('.progress-section').style.display='none';
+    document.querySelector('.ba-banner').style.display='none';
+    document.getElementById('successScreen').style.display='block';
+  },2000);
+}
+</script>
+</body>
+</html>
