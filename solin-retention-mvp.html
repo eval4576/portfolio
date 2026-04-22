@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Solin Retention MVP · Eddie Valdivia · Motionova Labs</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#05050a;--s1:#0a0a12;--s2:#0f0f1a;--s3:#141420;
+  --a:#7c5cfc;--a2:#a78bfa;--a3:#c4b5fd;
+  --tx:#f0f0f8;--t2:#8888aa;--t3:#52526e;
+  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.12);
+  --green:#10b981;--gold:#f59e0b;--red:#f87171;--blue:#60a5fa;
+  --r:10px;--r2:16px;--r3:24px;
+}
+html{font-size:15px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;min-height:100vh}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--a);border-radius:2px}
+
+/* HEADER */
+header{border-bottom:1px solid var(--bd);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(5,5,10,.95);backdrop-filter:blur(20px);z-index:50}
+.hdr-l{display:flex;align-items:center;gap:.75rem}
+.solin-logo{width:28px;height:28px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;color:#000}
+.hdr-brand{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--a2)}
+.hdr-sep{width:1px;height:16px;background:var(--bd2)}
+.hdr-sub{font-size:.75rem;color:var(--t3)}
+.hdr-badge{font-size:.62rem;background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.22);color:var(--a2);padding:.2rem .65rem;border-radius:999px;letter-spacing:.07em;text-transform:uppercase}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--bd);background:var(--s1);padding:0 2rem;overflow-x:auto}
+.tab-btn{padding:.85rem 1.2rem;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--t3);font-size:.78rem;font-weight:400;cursor:pointer;letter-spacing:.02em;white-space:nowrap;transition:all .2s;font-family:inherit}
+.tab-btn.active{border-bottom-color:var(--a);color:var(--tx);font-weight:700}
+
+/* MAIN */
+main{padding:2rem;max-width:1100px;margin:0 auto}
+.sec-eyebrow{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--a);margin-bottom:.4rem}
+.sec-h{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.4rem}
+.sec-sub{font-size:.82rem;color:var(--t2);max-width:600px;line-height:1.7;margin-bottom:1.5rem}
+
+/* PROTOTYPE LAYOUT */
+.proto-grid{display:grid;grid-template-columns:320px 1fr;gap:2rem;align-items:start}
+.phone-wrap{position:sticky;top:5rem}
+.phone-outer{background:#1a1a1a;border-radius:44px;padding:10px;border:6px solid #2a2a2a;box-shadow:0 30px 80px rgba(0,0,0,.6);max-width:300px;margin:0 auto}
+.phone-inner{background:#000;border-radius:36px;overflow:hidden;height:580px;position:relative}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100px;height:28px;background:#1a1a1a;border-radius:0 0 18px 18px;z-index:10}
+.phone-content{height:100%;overflow-y:auto;padding-top:8px}
+.screen-nav{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.screen-btn{padding:.42rem .9rem;border-radius:8px;border:1px solid var(--bd);background:transparent;color:var(--t3);font-size:.74rem;cursor:pointer;transition:all .2s;font-family:inherit}
+.screen-btn.active{border-color:var(--a);background:rgba(124,92,252,.1);color:var(--a2);font-weight:700}
+.phone-controls{text-align:center;margin-top:1rem;display:flex;justify-content:center;gap:.5rem}
+.ctrl-btn{padding:.4rem .9rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#888;cursor:pointer;font-size:.78rem;font-family:inherit;transition:all .2s}
+.ctrl-btn:hover:not(:disabled){color:var(--tx);border-color:var(--bd2)}
+.ctrl-btn:disabled{color:#333;cursor:not-allowed}
+.ctrl-sep{padding:.4rem .6rem;font-size:.72rem;color:#555}
+
+/* ANNOTATION CARD */
+.anno-card{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r2);padding:1.5rem;margin-bottom:1rem}
+.anno-label{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--a);margin-bottom:.5rem}
+.anno-title{font-size:1rem;font-weight:700;margin-bottom:.75rem}
+.anno-desc{font-size:.82rem;color:var(--t2);line-height:1.7;margin-bottom:1rem}
+.anno-grid{display:flex;flex-direction:column;gap:.5rem}
+.anno-item{background:var(--s3);border-radius:8px;padding:.85rem 1rem}
+.anno-item-k{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--a);margin-bottom:.2rem;font-weight:700}
+.anno-item-v{font-size:.78rem;color:#aaa;line-height:1.55}
+.excluded-box{background:rgba(248,113,113,.04);border:1px solid rgba(248,113,113,.15);border-radius:var(--r);padding:1.2rem}
+.excluded-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.5rem;font-weight:700}
+.excluded-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.75rem}
+.etag{font-size:.7rem;background:rgba(248,113,113,.08);color:var(--red);border:1px solid rgba(248,113,113,.18);border-radius:999px;padding:.18rem .55rem}
+.excluded-note{font-size:.75rem;color:#666;line-height:1.5}
+
+/* SPRINT */
+.sprint-list{display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem}
+.sprint-card{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.sprint-head{padding:1.2rem 1.5rem;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.sprint-title-row{display:flex;align-items:center;gap:.75rem}
+.sprint-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sprint-title{font-size:.95rem;font-weight:700}
+.sprint-weeks{font-size:.72rem;color:var(--t3);margin-top:.1rem}
+.sprint-deliverable{font-size:.72rem;border-radius:8px;padding:.3rem .75rem;font-weight:600}
+.sprint-body{padding:1.2rem 1.5rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.sprint-item{display:flex;align-items:center;gap:.4rem;background:var(--s3);border-radius:8px;padding:.4rem .8rem;font-size:.78rem;color:var(--t2)}
+.sprint-item-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.gate-box{background:linear-gradient(135deg,rgba(124,92,252,.07),transparent);border:1px solid rgba(124,92,252,.2);border-radius:var(--r2);padding:1.4rem}
+.gate-label{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--a);margin-bottom:.4rem;font-weight:700}
+.gate-text{font-size:.85rem;color:#aaa;line-height:1.7}
+
+/* METRICS */
+.metrics-list{display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem}
+.metric-card{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r2);padding:1.4rem}
+.metric-tier{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem}
+.metric-item{display:flex;gap:.75rem;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.metric-item:last-child{border-bottom:none}
+.metric-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:.45rem}
+.metric-text{font-size:.84rem;color:#c8c8e0;line-height:1.6}
+.northstar-card{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r2);padding:1.4rem}
+.northstar-label{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--a2);margin-bottom:.5rem;font-weight:700}
+.northstar-num{font-size:1.8rem;font-weight:900;color:var(--a2);letter-spacing:-.03em;margin-bottom:.3rem}
+.northstar-detail{font-size:.82rem;color:#888;line-height:1.6}
+
+/* KILL */
+.kill-list{display:flex;flex-direction:column;gap:.85rem;margin-bottom:1rem}
+.kill-card{background:rgba(248,113,113,.04);border:1px solid rgba(248,113,113,.15);border-radius:var(--r);padding:1.2rem 1.4rem;display:flex;gap:.85rem;align-items:flex-start}
+.kill-ico{width:28px;height:28px;border-radius:8px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;font-weight:700;color:var(--red)}
+.kill-text{font-size:.85rem;color:#d0c0c0;line-height:1.65}
+.kill-why{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.18);border-radius:var(--r);padding:1.3rem}
+.kill-why-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem;font-weight:700}
+.kill-why-text{font-size:.82rem;color:var(--t2);line-height:1.7}
+
+/* SCREENS */
+.sc{background:#0a0a0a;min-height:100%;display:flex;flex-direction:column;font-family:'Segoe UI',system-ui,sans-serif;overflow-y:auto}
+.sc-center{align-items:center;justify-content:center;padding:1.5rem;text-align:center}
+.tag-purple{font-size:.62rem;background:rgba(167,139,250,.15);color:#a78bfa;border:1px solid rgba(167,139,250,.25);border-radius:999px;padding:.15rem .5rem;font-weight:600}
+.tag-green{font-size:.62rem;background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.22);border-radius:999px;padding:.15rem .5rem;font-weight:600}
+.btn-primary{background:#7c5cfc;color:#fff;padding:.85rem;border-radius:999px;border:none;font-size:.88rem;font-weight:700;cursor:pointer;width:100%;font-family:inherit}
+.btn-ghost{background:transparent;color:#555;padding:.65rem;border-radius:999px;border:none;font-size:.78rem;cursor:pointer;width:100%;font-family:inherit;margin-top:.4rem}
+
+/* TAB PANELS */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+@media(max-width:800px){
+  .proto-grid{grid-template-columns:1fr}
+  .phone-wrap{position:relative;top:0}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-l">
+    <div class="solin-logo">S</div>
+    <div class="hdr-brand">Solin</div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-sub">Retention MVP · v1.0</div>
+  </div>
+  <div class="hdr-badge">APEX Output · Eddie Valdivia</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('prototype',this)">📱 Prototype</button>
+  <button class="tab-btn" onclick="switchTab('sprint',this)">🗓 Sprint Plan</button>
+  <button class="tab-btn" onclick="switchTab('metrics',this)">📊 Success Metrics</button>
+  <button class="tab-btn" onclick="switchTab('kill',this)">☠ Kill Criteria</button>
+</div>
+
+<main>
+
+  <!-- PROTOTYPE -->
+  <div id="tab-prototype" class="tab-panel active">
+    <div class="sec-eyebrow">MVP Screens</div>
+    <div class="sec-h">Post-Challenge Retention Flow</div>
+    <div class="sec-sub">The core intervention: a redesigned post-challenge completion experience that sets expectations, surfaces curated next programs, articulates subscription value, and triggers a 3-part re-engagement email sequence.</div>
+
+    <div class="screen-nav">
+      <button class="screen-btn active" onclick="showScreen(0,this)">Challenge Complete</button>
+      <button class="screen-btn" onclick="showScreen(1,this)">Next Program Path</button>
+      <button class="screen-btn" onclick="showScreen(2,this)">Subscription Value</button>
+      <button class="screen-btn" onclick="showScreen(3,this)">Day 7 Email</button>
+    </div>
+
+    <div class="proto-grid">
+      <div class="phone-wrap">
+        <div class="phone-outer">
+          <div class="phone-inner">
+            <div class="phone-notch"></div>
+            <div class="phone-content" id="phoneContent"></div>
+          </div>
+        </div>
+        <div class="phone-controls">
+          <button class="ctrl-btn" id="prevBtn" onclick="navScreen(-1)" disabled>← Prev</button>
+          <span class="ctrl-sep" id="screenCounter">1 / 4</span>
+          <button class="ctrl-btn" id="nextBtn" onclick="navScreen(1)">Next →</button>
+        </div>
+      </div>
+
+      <div id="annotations"></div>
+    </div>
+  </div>
+
+  <!-- SPRINT -->
+  <div id="tab-sprint" class="tab-panel">
+    <div class="sec-eyebrow">Execution Plan</div>
+    <div class="sec-h">12-Week Sprint Plan</div>
+    <div class="sec-sub">Four phases from discovery to full rollout. Decision gate at Week 8 — kill or scale based on early cohort data before full rollout commitment.</div>
+    <div class="sprint-list" id="sprintList"></div>
+    <div class="gate-box">
+      <div class="gate-label">⚖ Week 8 Decision Gate</div>
+      <div class="gate-text">At Week 8 we run a formal go/no-go review. If D30 re-engagement rate ≥15% and email unsubscribe rate &lt;2%, we proceed to full rollout. If either metric misses, we pause, diagnose, and decide whether to iterate or kill before committing to full rollout. This gate prevents sunk-cost continuation of a failing hypothesis.</div>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div id="tab-metrics" class="tab-panel">
+    <div class="sec-eyebrow">How We Measure Success</div>
+    <div class="sec-h">Success Metrics</div>
+    <div class="sec-sub">Three tiers: primary metrics that define success, secondary metrics that explain the mechanism, and guardrail metrics that ensure we're not winning the wrong way.</div>
+    <div class="metrics-list" id="metricsList"></div>
+    <div class="northstar-card">
+      <div class="northstar-label">North Star Metric</div>
+      <div class="northstar-num">Day 90 Retention</div>
+      <div class="northstar-detail">Current: 9% · Target: 14% · Industry benchmark: 12%<br/>A 5pt lift in D90 retention at current subscriber volume represents significant LTV improvement — and proves the between-challenge gap is the primary churn driver.</div>
+    </div>
+  </div>
+
+  <!-- KILL -->
+  <div id="tab-kill" class="tab-panel">
+    <div class="sec-eyebrow">When We Walk Away</div>
+    <div class="sec-h">Kill Criteria</div>
+    <div class="sec-sub">We define failure upfront — before a line of code is written. These are the conditions under which we stop, reassess, and redirect resources. Intellectual honesty over sunk-cost continuation.</div>
+    <div class="kill-list" id="killList"></div>
+    <div class="kill-why">
+      <div class="kill-why-label">Why Kill Criteria Matter</div>
+      <div class="kill-why-text">Most teams define success but not failure. Kill criteria force intellectual honesty — they prevent teams from moving goalposts when results disappoint. Defining them upfront signals product maturity and earns engineering trust. If we hit a kill condition, we don't lose — we learn fast and redirect capital to the next highest-leverage bet.</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ── SCREENS ──────────────────────────────────────────────
+const screens=[
+{
+  label:"Challenge Complete",
+  html:`<div class="sc sc-center" style="padding:1.5rem">
+    <div style="font-size:3.5rem;margin-bottom:.85rem">🏆</div>
+    <div style="font-size:1.35rem;font-weight:800;color:#fff;margin-bottom:.4rem">You crushed it.</div>
+    <div style="font-size:.82rem;color:#aaa;margin-bottom:1.5rem;line-height:1.6">You just completed <span style="color:#a78bfa;font-weight:700">Marcus's 6-Week Shred.</span><br/>Here's what that means for your body.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;width:100%;margin-bottom:1.5rem">
+      <div style="background:#1a1a2e;border-radius:10px;padding:.85rem .5rem;border:1px solid #2a2a4a"><div style="font-size:1.25rem;font-weight:900;color:#a78bfa">18</div><div style="font-size:.6rem;color:#888;margin-top:.2rem;line-height:1.4">Workouts</div></div>
+      <div style="background:#1a1a2e;border-radius:10px;padding:.85rem .5rem;border:1px solid #2a2a4a"><div style="font-size:1.25rem;font-weight:900;color:#a78bfa">2.8K</div><div style="font-size:.6rem;color:#888;margin-top:.2rem;line-height:1.4">Cal burned</div></div>
+      <div style="background:#1a1a2e;border-radius:10px;padding:.85rem .5rem;border:1px solid #2a2a4a"><div style="font-size:1.25rem;font-weight:900;color:#a78bfa">6</div><div style="font-size:.6rem;color:#888;margin-top:.2rem;line-height:1.4">Weeks consistent</div></div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(124,92,252,.18),rgba(124,92,252,.06));border:1px solid rgba(124,92,252,.3);border-radius:14px;padding:1rem;width:100%;margin-bottom:1.4rem;text-align:left">
+      <div style="font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#7c5cfc;margin-bottom:.35rem">What's Next For You</div>
+      <div style="font-size:.8rem;color:#ddd;line-height:1.6">Based on your completion data, you're ready for <strong style="color:#fff">strength-focused hypertrophy.</strong> We've curated 3 programs built for exactly where you are right now.</div>
+    </div>
+    <button class="btn-primary">See My Next Programs →</button>
+    <button class="btn-ghost">Explore on my own</button>
+  </div>`,
+  annotations:[
+    {k:"Problem it solves",v:"34% of cancellations cite 'not sure what to do next' — this screen addresses the gap at the highest-trust moment in the user journey."},
+    {k:"Key design decision",v:"Lead with celebration, not upsell. Trust before transaction. The completion stats make the user feel accomplished before we ask them to do anything."},
+    {k:"Hypothesis",v:"Users who see curated next-step programs within 60 seconds of completion will start a second challenge at 2x the current rate."},
+    {k:"Primary metric",v:"Second challenge start rate: 29% → 45% within 14 days of completion."},
+  ],
+  edgeCases:[
+    "User completed a free challenge (non-subscriber) — show subscription upsell instead of next program CTA. This is the highest-intent conversion moment.",
+    "User has completed the same challenge twice — suppress it from recommendations and surface creator's other programs instead.",
+    "User is in a caloric deficit based on nutrition logs — flag recovery-focused programs over high-intensity options.",
+    "User completed challenge while offline (gym with poor signal) — queue completion state, surface screen on next app open when connectivity returns.",
+    "User has no internet on completion — store locally, sync when connected. Never lose the celebration moment.",
+    "iOS low-power mode — animation degrades gracefully. CTA renders immediately without waiting for animation to complete.",
+  ]
+},
+{
+  label:"Next Program Path",
+  html:`<div class="sc" style="padding:1.2rem;overflow-y:auto">
+    <div style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#7c5cfc;margin-bottom:.3rem">Curated For You</div>
+    <div style="font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:.25rem">Your next challenge</div>
+    <div style="font-size:.72rem;color:#888;margin-bottom:1.2rem">Based on completing Marcus's 6-Week Shred</div>
+    <div style="background:#111;border:1px solid #7c5cfc66;border-radius:14px;margin-bottom:.85rem;overflow:hidden">
+      <div style="background:#7c5cfc;padding:.3rem .9rem;font-size:.62rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase">Perfect next step</div>
+      <div style="padding:.9rem">
+        <div style="display:flex;gap:.65rem;align-items:flex-start;margin-bottom:.85rem">
+          <div style="width:46px;height:46px;border-radius:10px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0">💪</div>
+          <div style="flex:1"><div style="font-size:.65rem;color:#888;margin-bottom:.1rem">Marcus Williams</div><div style="font-size:.85rem;font-weight:700;color:#fff;margin-bottom:.3rem">Power Hypertrophy 8-Week</div><div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag-purple">98% match</span><span class="tag-green">Included in subscription</span></div></div>
+        </div>
+        <button class="btn-primary" style="font-size:.78rem;padding:.65rem">Start This Program →</button>
+      </div>
+    </div>
+    <div style="background:#111;border:1px solid #222;border-radius:14px;margin-bottom:.85rem;padding:.9rem">
+      <div style="display:flex;gap:.65rem;align-items:flex-start;margin-bottom:.85rem">
+        <div style="width:46px;height:46px;border-radius:10px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0">🔥</div>
+        <div style="flex:1"><div style="font-size:.65rem;color:#888;margin-bottom:.1rem">Kayla Chen</div><div style="font-size:.85rem;font-weight:700;color:#fff;margin-bottom:.3rem">Lean Muscle Builder</div><div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag-purple">91% match</span><span style="font-size:.62rem;color:#888">$39</span></div></div>
+      </div>
+      <button style="width:100%;background:transparent;color:#7c5cfc;padding:.6rem;border-radius:999px;border:1px solid rgba(124,92,252,.3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">View Program</button>
+    </div>
+    <div style="background:#111;border:1px solid #222;border-radius:14px;padding:.9rem">
+      <div style="display:flex;gap:.65rem;align-items:flex-start;margin-bottom:.85rem">
+        <div style="width:46px;height:46px;border-radius:10px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0">⚡</div>
+        <div style="flex:1"><div style="font-size:.65rem;color:#888;margin-bottom:.1rem">Jordan Lee</div><div style="font-size:.85rem;font-weight:700;color:#fff;margin-bottom:.3rem">Athletic Performance</div><div style="display:flex;gap:.4rem;flex-wrap:wrap"><span class="tag-purple">84% match</span><span style="font-size:.62rem;color:#888">$52</span></div></div>
+      </div>
+      <button style="width:100%;background:transparent;color:#7c5cfc;padding:.6rem;border-radius:999px;border:1px solid rgba(124,92,252,.3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit">View Program</button>
+    </div>
+  </div>`,
+  annotations:[
+    {k:"Why rule-based first",v:"ML ranking engine is explicitly out of MVP scope. Three signals: creator affinity, content freshness, difficulty fit. Rules get 80% of the value with 20% of the complexity."},
+    {k:"The match score",v:"Visible confidence score builds user trust and explains the recommendation — critical for AI-adjacent features. Transparency over black-box."},
+    {k:"Subscription signal",v:"'Included in subscription' badge directly addresses cancellation reason #3: 'not enough value for $19.99 per month'."},
+    {k:"Creator continuity",v:"Surfaces the creator they just completed with as option #1 — leverages existing trust relationship rather than introducing cold discovery."},
+  ]
+},
+{
+  label:"Subscription Value",
+  html:`<div class="sc" style="padding:1.2rem;overflow-y:auto">
+    <div style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#7c5cfc;margin-bottom:.3rem">Your Subscription</div>
+    <div style="font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:.25rem">What you unlock every month</div>
+    <div style="font-size:.72rem;color:#888;margin-bottom:1.2rem">Solin Pro · $19.99/mo</div>
+    ${[["🤖","AI Nutrition Coach","Personalized meal plans that adapt to your workouts and goals. Learns your preferences over time.","$30/mo value"],["🏆","Unlimited Challenges","Access every creator challenge — no per-program fees. New programs added weekly.","$40+/mo value"],["📊","Progress Intelligence","Cohort benchmarking, streak tracking, and recovery recommendations based on your data.","$15/mo value"],["⚡","Creator Early Access","Get notified and access new programs 48 hours before they go public.","Exclusive"]].map(([ico,t,d,v])=>`
+    <div style="display:flex;gap:.75rem;padding:.9rem;background:#111;border:1px solid #222;border-radius:12px;margin-bottom:.65rem">
+      <div style="width:38px;height:38px;border-radius:9px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">${ico}</div>
+      <div style="flex:1"><div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.18rem">${t}</div><div style="font-size:.72rem;color:#888;line-height:1.5;margin-bottom:.25rem">${d}</div><div style="font-size:.65rem;color:#10b981;font-weight:600">${v}</div></div>
+    </div>`).join('')}
+    <div style="background:linear-gradient(135deg,rgba(124,92,252,.15),rgba(124,92,252,.05));border:1px solid rgba(124,92,252,.25);border-radius:12px;padding:1rem;text-align:center;margin-top:.25rem">
+      <div style="font-size:.72rem;color:#888;margin-bottom:.2rem">Total value</div>
+      <div style="font-size:1.5rem;font-weight:900;color:#a78bfa">$85+/mo</div>
+      <div style="font-size:.72rem;color:#666">You pay $19.99</div>
+    </div>
+  </div>`,
+  annotations:[
+    {k:"Timing is everything",v:"Post-completion is the highest emotional moment — users are proud, motivated, and receptive. This is when value articulation lands best."},
+    {k:"The $85 framing",v:"Concrete dollar value comparison is the most effective subscription retention technique. Amazon Prime and Costco both use this exact pattern."},
+    {k:"Addresses cancellation reason #3",v:"28% of cancellations cite 'too expensive for what I use.' This screen reframes the price anchoring without changing the price."},
+    {k:"What's excluded from MVP",v:"Full personalized feature recommendations require ML — that's Phase 2. This screen is static but immediately high-impact."},
+  ],
+  edgeCases:[
+    "User is already a subscriber seeing this — show usage stats ('You've logged 47 meals this month') instead of generic value props. Don't pitch what they already have.",
+    "User is a free-tier user — this is the conversion moment. Show a 7-day free trial CTA instead of monthly price. Lower the barrier at peak motivation.",
+    "User has never used the AI nutrition coach — highlight it as the #1 feature. Surface a 'Try it now' micro-CTA directly from this screen.",
+    "User has logged nutrition 5+ days this week — acknowledge it: 'You've been consistent with nutrition too.' Validates the subscription value they're already getting.",
+    "Subscription is about to renew in 3 days — suppress renewal reminder here. This is a value moment, not a billing moment. Billing friction kills the celebration.",
+  ]
+},
+{
+  label:"Day 7 Email",
+  html:`<div class="sc" style="background:#f5f5f5;padding:1rem;font-family:Georgia,serif;overflow-y:auto">
+    <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08)">
+      <div style="background:#0a0a0a;padding:1.2rem;text-align:center">
+        <div style="font-size:1rem;font-weight:800;color:#fff;letter-spacing:.1em">SOLIN</div>
+      </div>
+      <div style="padding:1.5rem">
+        <div style="font-size:.72rem;color:#999;margin-bottom:.85rem">Day 7 — Post Challenge Completion</div>
+        <div style="font-size:1rem;font-weight:700;color:#111;margin-bottom:.85rem;line-height:1.4">Your body is ready for what's next, Eddie.</div>
+        <div style="font-size:.8rem;color:#444;line-height:1.7;margin-bottom:.85rem">It's been 7 days since you finished Marcus's 6-Week Shred. That program built a foundation — now it's time to build on it.</div>
+        <div style="font-size:.8rem;color:#444;line-height:1.7;margin-bottom:1.2rem">Based on your performance data, you're in the top <strong>23%</strong> of completers for consistency. Here's what we curated for your next step:</div>
+        ${[["Power Hypertrophy 8-Week","Marcus Williams","Picks up where you left off"],["Lean Muscle Builder","Kayla Chen","Different approach, same goal"]].map(([p,c,t])=>`
+        <div style="border:1px solid #eee;border-radius:10px;padding:.9rem;margin-bottom:.65rem">
+          <div style="font-size:.62rem;color:#7c5cfc;font-weight:700;margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.06em">${t}</div>
+          <div style="font-size:.85rem;font-weight:700;color:#111">${p}</div>
+          <div style="font-size:.72rem;color:#888;margin-bottom:.55rem">by ${c}</div>
+          <div style="background:#7c5cfc;color:#fff;padding:.45rem .9rem;border-radius:999px;font-size:.72rem;font-weight:600;display:inline-block;cursor:pointer">View Program →</div>
+        </div>`).join('')}
+        <div style="border-top:1px solid #eee;margin-top:1.2rem;padding-top:.85rem;font-size:.68rem;color:#bbb;text-align:center;line-height:1.6">
+          You're receiving this because you completed a challenge on Solin.<br/>
+          <span style="color:#7c5cfc;cursor:pointer">Manage notifications</span> · <span style="color:#7c5cfc;cursor:pointer">Unsubscribe</span>
+        </div>
+      </div>
+    </div>
+  </div>`,
+  annotations:[
+    {k:"Why Day 7",v:"Usage data shows the danger zone is Days 7-14 post-completion. Intervention at Day 7 catches users before disengagement fully sets in."},
+    {k:"Personalization lever",v:"Percentile ranking ('top 23% for consistency') is computable from existing data — no ML required. Creates genuine personalization at zero engineering cost."},
+    {k:"The subject line",v:"'Your body is ready for what's next, Eddie.' — personal, forward-looking, not salesy. A/B test against achievement-framing variant."},
+    {k:"Unsubscribe guardrail",v:"Kill criteria: >5% unsubscribe rate triggers immediate sequence halt. User trust is the long-term asset. Short-term re-engagement is not worth burning it."},
+  ],
+  edgeCases:[
+    "User started a new program between completion and Day 7 — suppress the email entirely. Never congratulate someone for something they've already solved.",
+    "User has push notifications enabled — send an in-app push on Day 5 instead of the email. Use the higher-conversion channel first. Reserve email as the fallback.",
+    "User has unsubscribed from marketing emails but is still a subscriber — respect their preference. Send the in-app push only, never the email.",
+    "User's followed creator released a new program after completion — override the default recommendations in the email with the new program as #1.",
+    "User opened the email but didn't click — send a single follow-up on Day 14 with different subject line. Two touches maximum. After that, stop.",
+    "User unsubscribes from this email — remove from all re-engagement sequences immediately, flag in CS dashboard, do not re-add automatically.",
+  ]
+}
+];
+
+const sprintData=[
+  {phase:"Discovery & Diagnosis",weeks:"Weeks 1–2",color:"#7c5cfc",items:["Behavioral cohort segmentation","Intent survey (exit + in-app)","Messaging audit findings","Hypothesis validation roadmap"],deliverable:"Research brief + hypothesis stack"},
+  {phase:"Onboarding & Messaging Redesign",weeks:"Weeks 3–5",color:"#10b981",items:["Post-challenge completion screen","Next program recommendations (rule-based v1)","Tier value page redesign","Day 7 + Day 14 email templates","A/B test plan + holdout allocation"],deliverable:"Designs + email copy in staging"},
+  {phase:"Soft Launch & Monitoring",weeks:"Weeks 6–8",color:"#f59e0b",items:["Deploy to 30% new subscribers","Track D14/D21/D30 re-engagement","Measure unsubscribe rate","Adjust email content from early data"],deliverable:"Mid-point metrics + go/no-go"},
+  {phase:"Rollout & Validation",weeks:"Weeks 9–12",color:"#60a5fa",items:["Full rollout to all new cohorts","Measure D90 retention vs. baseline","Backfill onboarding nudge to existing users","Kill or scale decision"],deliverable:"D90 retention lift report"},
+];
+
+const metricsData=[
+  {tier:"Primary",color:"#10b981",items:["D90 retention: +5pts vs. baseline (18% → 23%)","Second challenge start rate: 29% → 45% within 14 days of completion"]},
+  {tier:"Secondary",color:"#7c5cfc",items:["Email D7 open rate >35%","Next program CTR from completion screen >40%","Cancellation reason #1 ('not sure what to do next') reduced by 30%"]},
+  {tier:"Guardrail",color:"#f59e0b",items:["Unsubscribe rate from email sequence <2%","No degradation in creator program purchase rate"]},
+];
+
+const killData=[
+  "D30 re-engagement rate <15% after 6 weeks of soft launch",
+  "Email unsubscribe rate >5% in first 2 weeks",
+  "No measurable lift in second challenge start rate after 8 weeks",
+  "Creator follow rate decreases — signals recommendation engine is misaligned with user intent",
+];
+
+// ── INIT ─────────────────────────────────────────────────
+let currentScreen=0;
+
+function renderScreen(idx){
+  document.getElementById('phoneContent').innerHTML=screens[idx].html;
+  document.getElementById('screenCounter').textContent=`${idx+1} / ${screens.length}`;
+  document.getElementById('prevBtn').disabled=idx===0;
+  document.getElementById('nextBtn').disabled=idx===screens.length-1;
+  // annotations
+  const s=screens[idx];
+  document.getElementById('annotations').innerHTML=`
+    <div class="anno-card">
+      <div class="anno-label">Screen ${idx+1} of ${screens.length}</div>
+      <div class="anno-title">${s.label}</div>
+      <div class="anno-grid">
+        ${s.annotations.map(a=>`<div class="anno-item"><div class="anno-item-k">${a.k}</div><div class="anno-item-v">${a.v}</div></div>`).join('')}
+      </div>
+    </div>
+    ${(s.edgeCases&&s.edgeCases.length)?`<div style="background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.15);border-radius:var(--r);padding:1.2rem;margin-bottom:1rem">
+      <div style="font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:.6rem;font-weight:700">⚠ Edge Cases — Spec Coverage</div>
+      ${s.edgeCases.map(e=>`<div style="display:flex;gap:.5rem;font-size:.78rem;color:var(--t2);margin-bottom:.4rem;line-height:1.55;align-items:flex-start"><div style="color:var(--blue);flex-shrink:0;font-weight:700">→</div><div>${e}</div></div>`).join('')}
+    </div>`:''}
+    <div class="excluded-box">
+      <div class="excluded-label">✕ Explicitly Out of MVP Scope</div>
+      <div class="excluded-tags">
+        ${["Personalized ML ranking","Creator analytics dashboard","Nutrition + workout integration","Faceted search","Community / social feed","Barcode scanner"].map(f=>`<span class="etag">${f}</span>`).join('')}
+      </div>
+      <div class="excluded-note">These are real Phase 2 opportunities — they require validation data from this MVP first. Excluding them keeps the sprint focused and the hypothesis clean.</div>
+    </div>`;
+}
+
+function showScreen(idx,btn){
+  currentScreen=idx;
+  document.querySelectorAll('.screen-btn').forEach((b,i)=>b.className='screen-btn'+(i===idx?' active':''));
+  renderScreen(idx);
+}
+
+function navScreen(dir){
+  const next=Math.max(0,Math.min(screens.length-1,currentScreen+dir));
+  showScreen(next,null);
+  document.querySelectorAll('.screen-btn').forEach((b,i)=>b.className='screen-btn'+(i===next?' active':''));
+}
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.className='tab-panel');
+  document.getElementById('tab-'+id).className='tab-panel active';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  btn.className='tab-btn active';
+}
+
+// BUILD SPRINT
+document.getElementById('sprintList').innerHTML=sprintData.map(p=>`
+  <div class="sprint-card">
+    <div class="sprint-head">
+      <div class="sprint-title-row">
+        <div class="sprint-dot" style="background:${p.color};box-shadow:0 0 10px ${p.color}88"></div>
+        <div><div class="sprint-title">${p.phase}</div><div class="sprint-weeks">${p.weeks}</div></div>
+      </div>
+      <div class="sprint-deliverable" style="background:${p.color}18;color:${p.color};border:1px solid ${p.color}33">Deliverable: ${p.deliverable}</div>
+    </div>
+    <div class="sprint-body">
+      ${p.items.map(item=>`<div class="sprint-item"><div class="sprint-item-dot" style="background:${p.color}"></div>${item}</div>`).join('')}
+    </div>
+  </div>`).join('');
+
+// BUILD METRICS
+document.getElementById('metricsList').innerHTML=metricsData.map(t=>`
+  <div class="metric-card">
+    <div class="metric-tier" style="color:${t.color}">${t.tier} Metrics</div>
+    ${t.items.map(item=>`<div class="metric-item"><div class="metric-dot" style="background:${t.color}"></div><div class="metric-text">${item}</div></div>`).join('')}
+  </div>`).join('');
+
+// BUILD KILL
+document.getElementById('killList').innerHTML=killData.map(k=>`
+  <div class="kill-card">
+    <div class="kill-ico">☠</div>
+    <div class="kill-text">${k}</div>
+  </div>`).join('');
+
+// INIT FIRST SCREEN
+renderScreen(0);
+</script>
+</body>
+</html>
